@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Live Traffic</title>
+</head>
+<body>
+
+<h2 id="complete"></h2>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type='text/javascript'>
+$(function() {
+	// Set the data text
+	var dataText = 'page=<?php echo $_SERVER['REQUEST_URI']; ?>&referrer=<?php echo $_SERVER['HTTP_REFERER']; ?>';
+
+	// Create the AJAX request
+	$.ajax({
+		type: "POST",                    // Using the POST method
+		url: "/process.php",             // The file to call
+		data: dataText,                  // Our data to pass
+		success: function() {            // What to do on success
+			$('#complete').html( 'Your page view has been added to the statistics!' );
+		}
+	});
+});
+</script>
+</body>
+</html>
