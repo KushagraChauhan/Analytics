@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<script
+			  src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous">
+		</script>
+		<script type="text/javascript">
+			var server = "http://127.0.0.1:5000";
+			var op_num = {'sum':[3,4]};
+			function update_var()
+			{
+				var n1 = parseFloat($("#n1").val());
+				var n2 = parseFloat($("#n2").val());
+				op_num['sum']=[n1,n2];
+			}
+			$( function() {
+				$( "#sum" ).click(function() {
+					var appdir='/sum';
+					var send_msg = "<p>Sending numbers</p>";
+					var received_msg = "<p>Result returned</p>";
+					update_var();
+					console.log(send_msg);
+					$('#message').html(send_msg);
+					$.ajax({
+  						type: "POST",
+  						url:server+appdir,
+  						data: JSON.stringify(op_num),
+  						dataType: 'json'
+					}).done(function(data) {
+						console.log(data);
+						$('#n3').val(data['sum']);
+						$('#message').html(received_msg+data['msg']);
+					});
+				});
+  			});
+
+		</script>
+	</head>
+	<body>
+		<div>
+			<div>
+				<label>N1:</label><input id="n1" type="number" value="3" max="300" min="-300"/><br/>
+				<label>N2:</label><input id="n2" type="number" value="2" max="300" min="-300"/><br/>
+				<label>Result:</label><input id="n3" type="number"/><br/>
+			</div>
+			<div id="sum" style="background-color:gray; width:100px; color:white;">
+				Click to sum numbers
+			</div>
+			<div id="message">
+			</div>
+		</div>
+	</body>
+</html>

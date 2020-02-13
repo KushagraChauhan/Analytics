@@ -1,0 +1,59 @@
+'''Visit Duration for the user'''
+<html>
+	<head>
+		<script
+			  src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous">
+		</script>
+		<script type="text/javascript">
+			var server = "http://127.0.0.1:5000";
+
+			let elapsedTime = 0;
+      const startDate = new Date();
+			var visit_dur = {'time':[]};
+			function visit()
+			{
+
+        const endDate = new Date();
+        const spentTime = endDate.getTime() - startDate.getTime();
+        elapsedTime += spentTime;
+				visit_dur['time'] = spentTime;
+				// console.log(endDate);
+        // console.log(startDate);
+			}
+
+			$( function() {
+					$( "#visit" ).click(function() {
+						var appdir='/visit';
+						var send_msg = "<p>Sending request</p>";
+						var received_msg = "<p>Visit Duration is- </p>";
+						visit();
+						// console.log(received_msg);
+						$('#message').html(send_msg);
+						$.ajax({
+	  						type: "POST",
+	  						url:server+appdir,
+	  						data: JSON.stringify(visit_dur),
+	  						dataType: 'json'
+						}).done(function(data) {
+							console.log(data);
+							$('#n3').val(data['spentTime']);
+							$('#message').html(received_msg+data['spentTime']+"ms");
+						});
+					});
+	  			});
+		</script>
+	</head>
+	<body>
+		<div>
+			<div id="visit" style="background-color:gray; width:100px; color:white;">
+				Visit Duration-
+			</div>
+			<div id="message">
+			</div>
+		</div>
+
+	</div>
+	</body>
+</html>
