@@ -55,7 +55,7 @@ def rec_img():
     '''Storing the data in the Cassandra db'''
     ##############
 
-    Users.objects(id).create(url=img_url, ref=img_ref, width=img_width,
+    Users.objects(id=2).create(id=2, url=img_url, ref=img_ref, width=img_width,
     height=img_height, platform=img_plaform, history=img_history, ip=ip)
     return resp
 
@@ -80,7 +80,11 @@ class Users(db.Model):
 @app.route("/ip", methods=["GET"])
 def location():
     ip = request.remote_addr
-    return getCity(ip) +' ' + getCountry(ip)
+    city = getCity(ip)
+    country = getCountry(ip)
+    return city +' ' + country
+
+
 
 def getCity(ip):
     ip = request.remote_addr
