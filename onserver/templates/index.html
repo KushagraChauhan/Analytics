@@ -1,0 +1,78 @@
+''This is the View for the project'''
+
+<html>
+<head>
+  <title>
+    flask analytics
+  </title>
+  <script>
+                        var img = new Image;
+                        img.width = img.height = "1px";
+                        var res = window.navigator;
+                        var data = {};
+                        var _plugins = {};
+                        Array.prototype.slice.call(navigator.plugins).forEach(function(v, k) {
+                          _plugins[v.name.toLowerCase().replace(/\s/, "-")] = {
+                            "name": v.name,
+                            "description": v.description,
+                            "filename": v.filename
+                          }
+                        });
+                        delete res.plugins && delete res.mimeTypes;
+                        data.url = window.location.href;
+                        data.ref = document.referrer;
+                        data.nav = res;
+                        data.width = window.screen.width;
+                        data.height = window.screen.height;
+                        data._plugins = _plugins;
+                        data.platform = navigator.platform;
+                        data.history = history.length;
+                        img.dataset.stats = JSON.stringify(data);
+                        console.log(
+                          img.dataset.stats
+                        );
+
+</script>
+<script
+ src="https://code.jquery.com/jquery-3.2.1.js"
+ integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+ crossorigin="anonymous"></script>
+<script>
+console.log("sending the data to the flask app")
+var server = "http://127.0.0.1:5000";
+//console.log("sending the data to the flask app")
+var send = {};
+
+function send_img(){
+  send = img.dataset.stats;
+  console.log('-------hello-------');
+}
+//console.log("sending the data to the flask app")
+$( function() {
+    $( "#demo" ).html(function() {
+      var appdir='/details';
+      var send_msg = "<p>Sending request</p>";
+      var received_msg = "<p>Details sent </p>";
+      send_img();
+      // console.log(received_msg);
+      $('#message').html(send_msg);
+      $.ajax({
+          type: "POST",
+          url:server+appdir,
+          data: send,
+          dataType: 'json'
+      }).done(function(data) {
+        console.log(data);
+        $('#n3').val(data['img']);
+        $('#message').html(received_msg);
+      });
+    });
+  });
+</script>
+</head>
+<body>
+  <p id="demo"> Please check console....</p>
+  <div id="message">
+  </div>
+</body>
+</html>
