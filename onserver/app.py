@@ -119,6 +119,30 @@ def getCountry(ip):
     response = reader.country(ip)
     return response.country.name
 
+################################################################################
+'''API to send the data in JSON format'''
+###############################################################################
+@app.route('/ret')
+def retreive():
+    cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
+
+    session = cluster.connect('trial')
+    session.row_factory = dict_factory
+
+    query = "SELECT * FROM {}.{};".format('trial', 'users')
+
+    def pandas_factory(colnames, rows):
+        return pd.DataFrame(rows, columns=colnames)
+
+    session.row_factory = pandas_factory
+    session.default_fetch_size = None
+
+    rslt = session.execute(query, timeout=None)
+    df = rslt._current_rows
+    data1 = df.to_json ()
+
+    return Response(df.to_json(orient="split"), mimetype='application/json')
+#############################################################################
 
 if __name__ == "__main__":
     app.run(debug=True)
