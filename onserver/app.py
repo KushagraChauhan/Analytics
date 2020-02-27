@@ -59,10 +59,6 @@ def rec_img():
     '''Storing the data in the Cassandra db'''
     ############################################################################
 
-    Users.objects(id=2).create(id=2, url=img_url, ref=img_ref, width=img_width,
-    height=img_height, platform=img_plaform, history=img_history, ip=ip)
-    return resp
-
     currentDT = datetime.datetime.now()
 
     Usertime.objects().create(url=img_url, ref=img_ref, width=img_width,
@@ -72,19 +68,6 @@ def rec_img():
 ################################################################################
 '''Structure of Cassandra database'''
 ################################################################################
-class Users(db.Model):
-    __keyspace__ = 'test'
-    #uid = db.columns.UUID(primary_key = True, default = uuid.uuid4)
-    id = db.columns.Integer(primary_key = True)
-    url = db.columns.Text()
-    ref = db.columns.Text()
-    nav = db.columns.Text()
-    width = db.columns.Integer()
-    height = db.columns.Integer()
-    platform = db.columns.Text()
-    history = db.columns.Integer()
-    ip = db.columns.Text()
-
 class Usertime(db.Model):
     __keyspace__ = 'test'
     id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
