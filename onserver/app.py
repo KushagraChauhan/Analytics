@@ -4,7 +4,7 @@ import geoip2.database as geo
 import os
 import uuid
 from flask_cqlalchemy import CQLAlchemy
-
+import datetime
 
 app = Flask(__name__)
 app.config['CASSANDRA_HOSTS'] = ['127.0.0.1']
@@ -50,14 +50,20 @@ def rec_img():
     resp = jsonify(resp_dic)
 
     resp.headers['Access-Control-Allow-Origin']='*'
-    #print('<<<<<<<<<',resp_dic,'>>>>>>>>>>>')
-    ##############
+
+    ############################################################################
     '''Storing the data in the Cassandra db'''
-    ##############
+    ############################################################################
 
     Users.objects(id=2).create(id=2, url=img_url, ref=img_ref, width=img_width,
     height=img_height, platform=img_plaform, history=img_history, ip=ip)
     return resp
+
+    currentDT = datetime.datetime.now()
+
+    Usertime.objects().create(url=img_url, ref=img_ref, width=img_width,
+    height=img_height, platform=img_plaform, history=img_history, ip=ip,time1=datetime.datetime.utcnow(),
+    time2=currentDT.strftime("%H:%M:%S"))
 
 ################################################################################
 '''Structure of Cassandra database'''
@@ -74,6 +80,20 @@ class Users(db.Model):
     platform = db.columns.Text()
     history = db.columns.Integer()
     ip = db.columns.Text()
+
+class Usertime(db.Model):
+    __keyspace__ = 'test'
+    id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
+    url = db.columns.Text()
+    ref = db.columns.Text()
+    nav = db.columns.Text()
+    width = db.columns.Integer()
+    height = db.columns.Integer()
+    platform = db.columns.Text()
+    history = db.columns.Integer()
+    ip = db.columns.Text()
+    time1 = db.columns.Date()
+    time2 = db.columns.Time()
 ################################################################################
 '''get the geolocation of the user'''
 ################################################################################
@@ -83,8 +103,6 @@ def location():
     city = getCity(ip)
     country = getCountry(ip)
     return city +' ' + country
-
-
 
 def getCity(ip):
     ip = request.remote_addr
