@@ -1,3 +1,4 @@
+
 ## FLANA 
 ### Web Analytics App using Flask
 ### Cassandra Database - NoSQL
@@ -57,6 +58,15 @@ Solution for the above error-
 
 	#Enter this command in your terminal
 	export CQLSH_NO_BUNDLED=true
+
+
+API Names:
+	
+[Retrieve User Profiles](https://analytics.techeela.net/ret)
+[Enter Static Data](https://analytics.techeela.net/static)
+[Retrieve Static Data](https://analytics.techeela.net/staticret)
+[Enter usergroup data](https://analytics.techeela.net/userdata)
+[Retrieve usergroup data](https://analytics.techeela.net/userdataret)
 
 ### Happy Coding
 

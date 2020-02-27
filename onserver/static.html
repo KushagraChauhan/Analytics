@@ -69,8 +69,38 @@ $( function() {
 </script>
 </head>
 <body>
-  <p id="demo">Thanks for sharing your info</p>
-  <div id="message">
-  </div>
 </body>
+<form action="/contact" id="contact-form" method="POST" enctype="text/plain">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="row">
+        <div class="input-field col s6">
+            <input type="text" class="validate" name ="first-name" id="first-name" pattern="[a-zA-Z]*" required/>
+            <label for="first-name">First name</label>
+            <span class="helper-text" data-error="Only text is accepted." data-success=""></span>
+        </div>
+        <div class="input-field col s6">
+            <input type="text" class="validate" name ="last-name" id="last-name" required/>
+            <label for="last-name">Last name</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <input type="email" class="validate" name ="mail-address" id="mail-address" required/>
+            <label for="mail-address">Email</label>
+            <span class="helper-text" data-error="Enter your email address here" data-success=""></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <textarea class="materialize-textarea validate" name ="comment-field" id="comment-field" required></textarea>
+            <label for="comment-field">Note</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <button class="waves-effect waves-light btn" id="contact-form-button" type="submit">submit</button>
+        </div>
+    </div>
+</form>
+<div id="form-response"></div>
 </html>

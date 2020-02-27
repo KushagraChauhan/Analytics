@@ -1,0 +1,53 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+  <script>
+  $(document).ready(function() {
+     $('form').on('submit', function(event) {
+       $.ajax({
+          data : {
+             userID : $('#userID').val(),
+             value: $('#value').val(),
+             time: $('#time').val(),
+             userGroup: $('#userGroup').val(),
+                 },
+             type : 'POST',
+             url : '/data'
+            })
+        .done(function(data) {
+          $('#output').text(data.output).show();
+      });
+      event.preventDefault();
+      });
+});
+  </script>
+  <p>Fill the details-</p>
+<form class="form-inline">
+<div class="form-group">
+<label class="sr-only" for="userID">UserID</label>
+<input type="text" class="form-control" id="userID" placeholder="user ID">
+</div>
+<div class="form-group">
+<label class="sr-only" for="value">Value</label>
+<input type="text" class="form-control" id="value" placeholder="value">
+</div>
+<div class="form-group">
+<label class="sr-only" for="time">Time</label>
+<input type="text" class="form-control" id="time" placeholder="time">
+</div>
+<div class="form-group">
+<label class="sr-only" for="userGroup">User Group</label>
+<input type="text" class="form-control" id="userGroup" placeholder="user Group">
+</div>
+
+<!--Submit Button-->
+<button type="submit" class="btn btn-success">Submit</button>
+</form>
+</br>
+<div id="output"></div>
+</br>
+</body>
+</html>

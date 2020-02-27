@@ -1,10 +1,14 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, Response
 import json
 import geoip2.database as geo
 import os
 import uuid
 from flask_cqlalchemy import CQLAlchemy
 import datetime
+from cassandra.cluster import Cluster
+from cassandra.auth import PlainTextAuthProvider
+from cassandra.query import dict_factory
+import pandas as pd
 
 app = Flask(__name__)
 app.config['CASSANDRA_HOSTS'] = ['127.0.0.1']
@@ -126,10 +130,10 @@ def getCountry(ip):
 def retreive():
     cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
 
-    session = cluster.connect('trial')
+    session = cluster.connect('test')
     session.row_factory = dict_factory
 
-    query = "SELECT * FROM {}.{};".format('trial', 'users')
+    query = "SELECT ip, url, time1, ref, nav, time2, platform, width, height FROM {}.{};".format('test', 'usertime')
 
     def pandas_factory(colnames, rows):
         return pd.DataFrame(rows, columns=colnames)
@@ -142,7 +146,117 @@ def retreive():
     data1 = df.to_json ()
 
     return Response(df.to_json(orient="split"), mimetype='application/json')
-#############################################################################
+################################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###################### I N T E R A C T I O N S ################################
+###################### ON              WEBSITE ################################
+###############################################################################
+###############################################################################
+###############################################################################
+@app.route("/static")
+def index1():
+    return render_template('static.html')
+
+@app.route('/process',methods= ['POST'])
+def process():
+    userID = request.form['userID']
+    expID = request.form['expID']
+    date = request.form['date']
+    time = request.form['time']
+    subcategory = request.form['subcategory']
+    userGroup = request.form['userGroup']
+
+    Static.objects().create(userID=userID, expID=expID, date1=date, time1=time,
+    subcategory=subcategory,userGroup=userGroup)
+    return "Thanks"
+################################################################################
+################################################################################
+
+@app.route("/userdata")
+def index2():
+    return render_template('userdata.html')
+
+@app.route('/data',methods= ['POST'])
+def process1():
+    userID = request.form['userID']
+    value = request.form['value']
+    time = request.form['time']
+    userGroup = request.form['userGroup']
+
+    print(userGroup)
+    Userdata.objects().create(userid=userID,usergroup=userGroup, time1=time, value=value)
+    return "Thanks"
+
+###############################################################################
+'''Database for interactons on website'''
+################################################################################
+class Static(db.Model):
+    __keyspace__ = 'test'
+    id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
+    expID = db.columns.Integer()
+    date1 = db.columns.Text()
+    time1 = db.columns.Text()
+    userID = db.columns.Integer()
+    subcategory = db.columns.Text()
+    userGroup = db.columns.Text()
+
+class Userdata(db.Model):
+    __keyspace__='test'
+    id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
+    userid = db.columns.Integer()
+    usergroup = db.columns.Text()
+    time1 = db.columns.Text()
+    value = db.columns.Integer()
+################################################################################
+################################################################################
+'''API to send interactons on website'''
+################################################################################
+@app.route('/staticret')
+def retreive1():
+    cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
+
+    session = cluster.connect('test')
+    session.row_factory = dict_factory
+
+    query = "SELECT 'expID', date1, time1, 'userID', subcategory, userGroup FROM {}.{};".format('test', 'static')
+
+    def pandas_factory(colnames, rows):
+        return pd.DataFrame(rows, columns=colnames)
+
+    session.row_factory = pandas_factory
+    session.default_fetch_size = None
+
+    rslt = session.execute(query, timeout=None)
+    df = rslt._current_rows
+    data1 = df.to_json ()
+
+    return Response(df.to_json(orient="split"), mimetype='application/json')
+###############################################################################
+###############################################################################
+@app.route('/userdataret')
+def retreive2():
+    cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
+
+    session = cluster.connect('test')
+    session.row_factory = dict_factory
+
+    query = "SELECT userid, value, time1, usergroup FROM {}.{};".format('test', 'userdata')
+
+    def pandas_factory(colnames, rows):
+        return pd.DataFrame(rows, columns=colnames)
+
+    session.row_factory = pandas_factory
+    session.default_fetch_size = None
+
+    rslt = session.execute(query, timeout=None)
+    df = rslt._current_rows
+    data1 = df.to_json ()
+
+    return Response(df.to_json(orient="split"), mimetype='application/json')
 
 if __name__ == "__main__":
     app.run(debug=True)
