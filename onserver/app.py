@@ -235,8 +235,9 @@ def retreive2():
     session = cluster.connect('test')
     session.row_factory = dict_factory
 
-    query = "SELECT userid, value, time1, usergroup FROM {}.{};".format('test', 'userdata')
-
+    #query = "SELECT userid, value, time1, usergroup FROM {}.{};".format('test', 'userdata')
+    query = "SELECT usergroup, click_date, click_time, ip, device, category, subcategory, expid, session_id,userid  FROM {}.{};".format('test', 'expcentreclickdata')
+    query1 = "SELECT click_date FROM test.expcentreclickdata;"
     def pandas_factory(colnames, rows):
         return pd.DataFrame(rows, columns=colnames)
 
@@ -245,9 +246,12 @@ def retreive2():
 
     rslt = session.execute(query, timeout=None)
     df = rslt._current_rows
-    data1 = df.to_json ()
-
-    return Response(df.to_json(orient="split"), mimetype='application/json')
+    data1 = df.values.tolist ()
+    data2 = df.to_json()
+    print(data1)
+#    return Response(df.to_json(orient="split"), mimetype='application/json')
+    return json.dumps(data1, indent=4, sort_keys=True, default=str)
+    #return jsonify(data1)
 ###############################################################################
 ###############################################################################
 @app.route('/userdataret1',methods=['GET'])
@@ -273,12 +277,15 @@ def retreive3():
     session.default_fetch_size = None
 
     rslt = session.execute(query2, timeout=None)
-
+    print(rslt)
     df = rslt._current_rows
-    data1 = df.to_json ()
+    print(df)
+    data1 = df.values.tolist ()
+    #return Response(df.to_json(), mimetype='application/json')
+    jsp = json.dumps(data1, indent=4, sort_keys=True, default=str)
+    return Response(jsp)
+###############################################################################
+###############################################################################
 
-    return Response(df.to_json(), mimetype='application/json')
-###############################################################################
-###############################################################################
 if __name__ == "__main__":
     app.run(debug=True)
