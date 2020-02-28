@@ -107,7 +107,7 @@ def getCountry(ip):
     return response.country.name
 
 ################################################################################
-'''API to send the data in JSON format'''
+'''API to send user profile from DB'''
 ###############################################################################
 @app.route('/ret')
 def retreive():
@@ -160,25 +160,8 @@ def process():
     Expcentreclickdata.objects().create(userid=userID, expid=expID, click_date=date, click_time=time,
     category=category,session_id=session_id,ip=ip,subcategory=subcategory,usergroup=userGroup,device=device)
     return "Thanks"
+
 ################################################################################
-################################################################################
-
-@app.route("/userdata")
-def index2():
-    return render_template('userdata.html')
-
-@app.route('/data',methods= ['POST'])
-def process1():
-    userID = request.form['userID']
-    value = request.form['value']
-    time = request.form['time']
-    userGroup = request.form['userGroup']
-
-    print(userGroup)
-    Userdata.objects().create(userid=userID,usergroup=userGroup, time1=time, value=value)
-    return "Thanks"
-
-###############################################################################
 '''Database for interactons on website'''
 ################################################################################
 class Expcentreclickdata(db.Model):
@@ -195,38 +178,9 @@ class Expcentreclickdata(db.Model):
     subcategory = db.columns.Text()
     usergroup = db.columns.Text()
 
-class Userdata(db.Model):
-    __keyspace__='test'
-    id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
-    userid = db.columns.Integer()
-    usergroup = db.columns.Text()
-    time1 = db.columns.Text()
-    value = db.columns.Integer()
 ################################################################################
 ################################################################################
-'''API to send interactons on website'''
-################################################################################
-@app.route('/staticret')
-def retreive1():
-    cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
-
-    session = cluster.connect('test')
-    session.row_factory = dict_factory
-
-    query = "SELECT 'expID', date1, time1, 'userID', subcategory, userGroup FROM {}.{};".format('test', 'static')
-
-    def pandas_factory(colnames, rows):
-        return pd.DataFrame(rows, columns=colnames)
-
-    session.row_factory = pandas_factory
-    session.default_fetch_size = None
-
-    rslt = session.execute(query, timeout=None)
-    df = rslt._current_rows
-    data1 = df.to_json ()
-
-    return Response(df.to_json(orient="split"), mimetype='application/json')
-###############################################################################
+'''API to retrieve all user data'''
 ###############################################################################
 @app.route('/userdataret')
 def retreive2():
@@ -253,6 +207,7 @@ def retreive2():
     return json.dumps(data1, indent=4, sort_keys=True, default=str)
     #return jsonify(data1)
 ###############################################################################
+'''API to get user data in a specific time period'''
 ###############################################################################
 @app.route('/userdataret1',methods=['GET'])
 def retreive3():

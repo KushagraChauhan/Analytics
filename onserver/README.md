@@ -65,7 +65,7 @@ API Names:
 [Retrieve User Profiles](https://analytics.techeela.net/ret)
 [Enter Static Data](https://analytics.techeela.net/static)
 [Retrieve Static Data](https://analytics.techeela.net/staticret)
-[Enter usergroup data](https://analytics.techeela.net/userdata)
+[Retrieve all user data](https://analytics.techeela.net/userdata)
 [Retrieve usergroup data within a time peroid](https://analytics.techeela.net/userdataret1)
 
 ### Happy Coding
