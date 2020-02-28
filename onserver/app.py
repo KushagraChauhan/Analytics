@@ -152,9 +152,13 @@ def process():
     time = request.form['time']
     subcategory = request.form['subcategory']
     userGroup = request.form['userGroup']
+    session_id = request.form['session_id']
+    category = request.form['category']
+    device = request.form['device']
+    ip = request.form['ip']
 
-    Static.objects().create(userID=userID, expID=expID, date1=date, time1=time,
-    subcategory=subcategory,userGroup=userGroup)
+    Expcentreclickdata.objects().create(userid=userID, expid=expID, click_date=date, click_time=time,
+    category=category,session_id=session_id,ip=ip,subcategory=subcategory,usergroup=userGroup,device=device)
     return "Thanks"
 ################################################################################
 ################################################################################
@@ -177,15 +181,19 @@ def process1():
 ###############################################################################
 '''Database for interactons on website'''
 ################################################################################
-class Static(db.Model):
+class Expcentreclickdata(db.Model):
     __keyspace__ = 'test'
-    id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
-    expID = db.columns.Integer()
-    date1 = db.columns.Text()
-    time1 = db.columns.Text()
-    userID = db.columns.Integer()
+    #id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
+    expid = db.columns.Integer()
+    click_date = db.columns.Date()
+    click_time = db.columns.Time()
+    category = db.columns.Text()
+    session_id = db.columns.Integer()
+    ip = db.columns.Text()
+    device = db.columns.Text()
+    userid = db.columns.Integer(primary_key=True)
     subcategory = db.columns.Text()
-    userGroup = db.columns.Text()
+    usergroup = db.columns.Text()
 
 class Userdata(db.Model):
     __keyspace__='test'
@@ -240,6 +248,37 @@ def retreive2():
     data1 = df.to_json ()
 
     return Response(df.to_json(orient="split"), mimetype='application/json')
+###############################################################################
+###############################################################################
+@app.route('/userdataret1',methods=['GET'])
+def retreive3():
+    cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
+    #startdate = request.args.['startdate']
+    startdate = request.args['startdate']
+    enddate = request.args['enddate']
+    usergroup = request.args['usergroup']
+    session = cluster.connect('test')
+    session.row_factory = dict_factory
 
+    #query1 = "SELECT Count(*) FROM test.Expcentreclickdata WHERE usergroup={} AND click_date>start_date&, click_date={} ALLOW FILTERING;".format{}
+    query2 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate, enddate,usergroup)
+    query3 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate, enddate,usergroup)
+
+    #query = "SELECT userid, value, time1, usergroup FROM {}.{};".format('test', 'userdata')
+
+    def pandas_factory(colnames, rows):
+        return pd.DataFrame(rows, columns=colnames)
+
+    session.row_factory = pandas_factory
+    session.default_fetch_size = None
+
+    rslt = session.execute(query2, timeout=None)
+
+    df = rslt._current_rows
+    data1 = df.to_json ()
+
+    return Response(df.to_json(), mimetype='application/json')
+###############################################################################
+###############################################################################
 if __name__ == "__main__":
     app.run(debug=True)

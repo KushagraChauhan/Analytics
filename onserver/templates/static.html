@@ -14,6 +14,10 @@
              date: $('#date').val(),
              time: $('#time').val(),
              subcategory: $('#subcategory').val(),
+             session_id: $('#session_id').val(),
+             category: $('#category').val(),
+             device: $('#device').val(),
+             ip: $('#ip').val(),
              userGroup: $('#userGroup').val(),
                  },
              type : 'POST',
@@ -51,6 +55,26 @@
 <div class="form-group">
 <label class="sr-only" for="userGroup">User Group</label>
 <input type="text" class="form-control" id="userGroup" placeholder="user Group">
+</div>
+</div>
+<div class="form-group">
+<label class="sr-only" for="session_id">Session ID</label>
+<input type="text" class="form-control" id="session_id" placeholder="Session ID">
+</div>
+</div>
+<div class="form-group">
+<label class="sr-only" for="category">Category</label>
+<input type="text" class="form-control" id="category" placeholder="Category">
+</div>
+</div>
+<div class="form-group">
+<label class="sr-only" for="device">Device</label>
+<input type="text" class="form-control" id="device" placeholder="device">
+</div>
+</div>
+<div class="form-group">
+<label class="sr-only" for="ip">IP</label>
+<input type="text" class="form-control" id="ip" placeholder="ip">
 </div>
 
 <!--Submit Button-->
