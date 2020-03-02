@@ -4,12 +4,14 @@ import geoip2.database as geo
 import os
 import uuid
 from flask_cqlalchemy import CQLAlchemy
+from datetime import date
 import datetime
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.query import dict_factory
 import pandas as pd
-
+from operator import truediv
+import numpy as np
 app = Flask(__name__)
 app.config['CASSANDRA_HOSTS'] = ['127.0.0.1']
 app.config['CASSANDRA_KEYSPACE'] = "test"
@@ -166,17 +168,17 @@ def process():
 ################################################################################
 class Expcentreclickdata(db.Model):
     __keyspace__ = 'test'
-    #id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
-    expid = db.columns.Integer()
-    click_date = db.columns.Date()
-    click_time = db.columns.Time()
+    id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
     category = db.columns.Text()
-    session_id = db.columns.Integer()
-    ip = db.columns.Text()
-    device = db.columns.Text()
-    userid = db.columns.Integer(primary_key=True)
     subcategory = db.columns.Text()
     usergroup = db.columns.Text()
+    userid = db.columns.Integer()
+    expid = db.columns.Integer()
+    device = db.columns.Text()
+    session_id = db.columns.Integer()
+    click_date = db.columns.Date()
+    click_time = db.columns.Time()
+    ip = db.columns.Text()
 
 ################################################################################
 ################################################################################
@@ -203,7 +205,7 @@ def retreive2():
     data1 = df.values.tolist ()
     data2 = df.to_json()
     print(data1)
-#    return Response(df.to_json(orient="split"), mimetype='application/json')
+#    return Response(df.to_json(orient="table"), mimetype='application/json')
     return json.dumps(data1, indent=4, sort_keys=True, default=str)
     #return jsonify(data1)
 ###############################################################################
@@ -215,32 +217,103 @@ def retreive3():
     #startdate = request.args.['startdate']
     startdate = request.args['startdate']
     enddate = request.args['enddate']
+    category = request.args['category']
     usergroup = request.args['usergroup']
+#   subcategory = request.args['subcategory']
     session = cluster.connect('test')
     session.row_factory = dict_factory
+    print(startdate)
+    startdate_st = startdate.strip()
+    string = 'hello'
+    print(string.strip())
+    startdate_st = startdate.strip('()')
+    print(startdate.strip())
+    enddate_st = enddate.strip('()')
+    print(enddate.strip('()'))
+    start = datetime.datetime.strptime(startdate_st, "%Y-%m-%d")
+    end = datetime.datetime.strptime(enddate_st, "%Y-%m-%d")
+    delta = end - start
+    print(delta.days)
+    durationtime = delta.days + 1
+    print(durationtime)
+    print("durationtime", durationtime)
+    startday = start.strftime("%d")
+    endday = end.strftime("%d")
+    endstart = start.strftime("%d")
+    endday_mon = end.strftime("%m")
+    year_start = start.strftime("%Y")
+    year_end = end.strftime("%Y")
+    print(startday)
+    print(endday_mon)
+    prevenddate = int(startday) - 1
+    print('prev end',prevenddate)
+    prevstartdate = prevenddate - durationtime + 1
+    print('prev start',prevstartdate)
+    startdate1 = "'" + startdate +"'"
+    print(startdate1)
+    enddate1 = "'" + enddate +"'"
+    print(enddate1)
+    prevstartdate1 = "'" + year_start + "-" + endday_mon + "-" + str(prevenddate) + "'"
+    prevenddate1 = "'" + year_end + "-" + endday_mon + "-" + str(prevstartdate) + "'"
+    #prevenddate1 = "2020-" + endday_mon + "-" +prevenddate
 
-    #query1 = "SELECT Count(*) FROM test.Expcentreclickdata WHERE usergroup={} AND click_date>start_date&, click_date={} ALLOW FILTERING;".format{}
-    query2 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate, enddate,usergroup)
-    query3 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate, enddate,usergroup)
+    print(prevstartdate1)
+    print(prevenddate1)
+    usergroupquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate1, enddate1, usergroup)
+    prevusergroupquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(prevenddate1, prevstartdate1,usergroup)
 
-    #query = "SELECT userid, value, time1, usergroup FROM {}.{};".format('test', 'userdata')
-
+    categoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND category={} ALLOW FILTERING;".format(startdate, enddate,category)
+    prevcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND category={} ALLOW FILTERING;".format(prevenddate1, prevstartdate1,category)
+###############################################################################
     def pandas_factory(colnames, rows):
         return pd.DataFrame(rows, columns=colnames)
 
     session.row_factory = pandas_factory
     session.default_fetch_size = None
 
-    rslt = session.execute(query2, timeout=None)
-    print(rslt)
-    df = rslt._current_rows
-    print(df)
-    data1 = df.values.tolist ()
-    #return Response(df.to_json(), mimetype='application/json')
-    jsp = json.dumps(data1, indent=4, sort_keys=True, default=str)
+    rslt_userdata_now = session.execute(usergroupquery, timeout=None)
+    rslt_userdata_prev = session.execute(prevusergroupquery, timeout=None)
+    df_userdata_now = rslt_userdata_now._current_rows
+    df_userdata_prev = rslt_userdata_prev._current_rows
+    print(rslt_userdata_prev)
+    print(df_userdata_prev)
+    data_userdata_now = df_userdata_now.values.tolist ()
+    data_userdata_prev = df_userdata_prev.values.tolist()
+#######################################################################
+    rslt_category_now = session.execute(categoryquery, timeout=None)
+    rslt_category_prev = session.execute(prevcategoryquery, timeout=None)
+    df_category_now = rslt_category_now._current_rows
+    df_category_prev = rslt_category_prev._current_rows
+    data_category_now = df_category_now.values.tolist ()
+    data_category_prev = df_category_prev.values.tolist()
+# ####################################################################
+    print("list data",data_userdata_prev[0])
+    data_userdata_percenatge = []
+    u1 = data_userdata_now[0]
+    u2 = data_userdata_prev[0]
+    print(u2)
+    print(u1)
+    diff = list(np.array(u1) - np.array(u2))
+
+    print("difference:",diff)
+    res = list(map(truediv, diff , u2))
+    my_new_list = [i * 100 for i in res]
+    res_final = my_new_list.append(u1)
+    print(my_new_list)
+    res_final = my_new_list.append(usergroup)
+
+#     data_category_percentage = (data_category_now - data_category_prev)/data_category_prev * 100
+#
+#     list_userdata = sorted(data_userdata_now)
+#     list_category = sorted(data_category_now)
+
+    #return Response(data_percenatge.to_json(), mimetype='application/json')
+
+
+    jsp = json.dumps(my_new_list, indent=4, sort_keys=True, default=str)
     return Response(jsp)
 ###############################################################################
 ###############################################################################
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,port=4500)
