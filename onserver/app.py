@@ -7,7 +7,7 @@ import os
 import re
 import uuid
 from flask_cqlalchemy import CQLAlchemy
-from datetime import date
+from datetime import date, timedelta
 import datetime
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
@@ -163,10 +163,10 @@ def process():
     device = request.form['device']
     ip = request.form['ip']
 
-    # Expcentreclickdata.objects().create(userid=userID, expid=expID, click_date=date, click_time=time,
-    # category=category,session_id=session_id,ip=ip,subcategory=subcategory,usergroup=userGroup,device=device)
-    Expcentreclickdata_test.objects().create(userid=userID, expid=expID, click_date=date, click_time=time,
+    Expcentreclickdata.objects().create(userid=userID, expid=expID, click_date=date, click_time=time,
     category=category,session_id=session_id,ip=ip,subcategory=subcategory,usergroup=userGroup,device=device)
+    # Expcentreclickdata_test.objects().create(userid=userID, expid=expID, click_date=date, click_time=time,
+    # category=category,session_id=session_id,ip=ip,subcategory=subcategory,usergroup=userGroup,device=device)
     return "Thanks"
 
 ################################################################################
@@ -582,22 +582,14 @@ def retrieve6():
     for i in range(category_length):
         subcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate1, enddate1, subcategory_unique[i])
         prevsubcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(prevenddate1, prevstartdate1, subcategory_unique[i])
-        clickdatequey = "SELECT click_date FROM test.Expcentreclickdata WHERE usergroup={} ALLOW FILTERING;".format(subcategory_unique[i])
         rslt_category_now = session.execute(subcategoryquery, timeout=None)
         rslt_category_prev = session.execute(prevsubcategoryquery, timeout=None)
-        rslt_clickdate = session.execute(clickdatequey, timeout=None)
         df_category_now = rslt_category_now._current_rows
         df_category_prev = rslt_category_prev._current_rows
-        df_clickdate = rslt_clickdate._current_rows
         data_category_now = df_category_now.values.tolist()
         data_category_prev = df_category_prev.values.tolist()
-        data_clickdate = df_clickdate.values.tolist()
         data_now.append(str(data_category_now))
         data_prev.append(str(data_category_prev))
-        data_date.append(str(data_clickdate))
-
-    #abc = json.dumps(data_date,  default=str)
-#    print(abc)
 ###############Calculations on the data#########################################
     z = []
     for i in range(category_length):
@@ -612,12 +604,118 @@ def retrieve6():
         res_final = my_new_list.append(u1)
         res_final = my_new_list.append(subcategory_unique[i])
         final_result.append(str(my_new_list))
-        x = {"User Group":subcategory_unique[i],"count":u1, "change%":res, "duration":durationtime}
+        print(subcategory_unique[i])
+        sub = str(subcategory_unique[i]).strip('')
+        print("SUB:",sub)
+        x = {"User Group":subcategory_unique[i],"count":int(u1), "change%":res, "duration":durationtime}
         y = json.dumps(x)
         z.append(json.loads(y))
         print(z)
         row_json = json.dumps(z)
-        
+
+    return row_json
+
+#################################################################################
+'''API for usergroup (no hardcoding)'''
+#################################################################################
+@app.route('/userdataret5',methods=['GET'])
+def retrieve7():
+    cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
+    startdate = request.args['startdate']
+    enddate = request.args['enddate']
+    session = cluster.connect('test')
+    session.row_factory = dict_factory
+    startdate_st = startdate.strip()
+    startdate_st = startdate.strip('()')
+    enddate_st = enddate.strip('()')
+    start = datetime.datetime.strptime(startdate_st, "%Y-%m-%d")
+    end = datetime.datetime.strptime(enddate_st, "%Y-%m-%d")
+    delta = end - start
+    durationtime = delta.days + 1
+    startday = start.strftime("%d")
+    endday = end.strftime("%d")
+    endstart = start.strftime("%d")
+    endday_mon = end.strftime("%m")
+    year_start = start.strftime("%Y")
+    year_end = end.strftime("%Y")
+    dt_prev_start = start - timedelta(durationtime)
+    dt_prev_end = end - timedelta(durationtime)
+    d1 = str(dt_prev_end)
+    prevenddate = d1.strip("00:00:00")
+    d2 = str(dt_prev_start)
+    prevstartdate = d2.strip("00:00:00")
+    startdate1 = "'" + startdate +"'"
+    enddate1 = "'" + enddate +"'"
+    prevstartdate = prevstartdate.strip()
+    prevstartdate =  "'"+ prevstartdate +"'"
+    prevenddate = prevenddate.strip()
+    prevenddate =  "'"+ prevenddate +"'"
+    def pandas_factory(colnames, rows):
+        return pd.DataFrame(rows, columns=colnames)
+    session.row_factory = pandas_factory
+    session.default_fetch_size = None
+    userquery = "SELECT usergroup FROM test.Expcentreclickdata ALLOW FILTERING;"
+    rslt_usergroup = session.execute(userquery)
+    df_usergroup = rslt_usergroup._current_rows
+    data_usergroup = df_usergroup.values.tolist()
+    unique_list = []
+    for x in data_usergroup:
+        if x not in unique_list:
+            unique_list.append(x)
+    category_length = len(unique_list)
+    subcategory_unique = []
+    for i in range(category_length):
+        subcategory_unique.append(str(unique_list[i]).strip('[]'))
+    subcategory_length = len(subcategory_unique)#Get the stripped down vresion of the unique list
+    data_category_prev = []
+    data_now = []
+    data_prev = []
+    final_result = []
+    data_date = []
+##############Execute the query and save in a list#####################
+    for i in range(category_length):
+        subcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate1, enddate1 , subcategory_unique[i])
+        prevsubcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(prevstartdate, prevenddate, subcategory_unique[i])
+        clickdatequey = "SELECT click_date FROM test.Expcentreclickdata WHERE usergroup={} ALLOW FILTERING;".format(subcategory_unique[i])
+        rslt_category_now = session.execute(subcategoryquery, timeout=None)
+        rslt_category_prev = session.execute(prevsubcategoryquery, timeout=None)
+        rslt_clickdate = session.execute(clickdatequey, timeout=None)
+        df_category_now = rslt_category_now._current_rows
+        df_category_prev = rslt_category_prev._current_rows
+        df_clickdate = rslt_clickdate._current_rows
+        data_category_now = df_category_now.values.tolist()
+        data_category_prev = df_category_prev.values.tolist()
+        data_clickdate = df_clickdate.values.tolist()
+        data_now.append(str(data_category_now))
+        data_prev.append(str(data_category_prev))
+        data_date.append(str(data_clickdate))
+
+    print(data_now)
+    print(data_prev)
+######################Calculation##############################################
+    z = []
+    for i in range(category_length):
+        u1 = data_now[i]
+        u2 = data_prev[i]
+        print("u2",u2)
+        u1 = str(u1).strip('[]')
+        u2 = str(u2).strip('[]')
+        diff = int(u1) - int(u2)
+        res = diff/int(u2)
+        res = res*100
+        my_new_list = [res]
+        res_final = my_new_list.append(u1)
+        res_final = my_new_list.append(subcategory_unique[i])
+        final_result.append(str(my_new_list))
+        print(subcategory_unique[i])
+        sub = str(subcategory_unique[i]).strip('')
+        print("SUB:",sub)
+        x = {"User Group":subcategory_unique[i],"count":int(u1), "change%":res, "duration":durationtime}
+        y = json.dumps(x)
+        z.append(json.loads(y))
+        print(z)
+        row_json = json.dumps(z)
+
     return row_json
 
 
