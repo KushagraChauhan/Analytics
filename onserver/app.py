@@ -234,180 +234,13 @@ def retreive2():
     # return jsp
 
     #return jsonify(data1)
-###############################################################################
-'''API to get user group in a specific time period'''
-###############################################################################
-@app.route('/userdataret1',methods=['GET'])
-def retreive3():
-    cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
-    startdate = request.args['startdate']
-    enddate = request.args['enddate']
-    session = cluster.connect('test')
-    session.row_factory = dict_factory
-    print(startdate)
-    startdate_st = startdate.strip()
-    string = 'hello'
-    print(string.strip())
-    startdate_st = startdate.strip('()')
-    print(startdate.strip())
-    enddate_st = enddate.strip('()')
-    print(enddate.strip('()'))
-    start = datetime.datetime.strptime(startdate_st, "%Y-%m-%d")
-    end = datetime.datetime.strptime(enddate_st, "%Y-%m-%d")
-    delta = end - start
-    print(delta.days)
-    durationtime = delta.days + 1
-    print(durationtime)
-    print("durationtime", durationtime)
-    startday = start.strftime("%d")
-    endday = end.strftime("%d")
-    endstart = start.strftime("%d")
-    endday_mon = end.strftime("%m")
-    year_start = start.strftime("%Y")
-    year_end = end.strftime("%Y")
-    print(startday)
-    print(endday_mon)
-    prevenddate = int(startday) - 1
-    print('prev end',prevenddate)
-    prevstartdate = prevenddate - durationtime + 1
-    print('prev start',prevstartdate)
-    startdate1 = "'" + startdate +"'"
-    print(startdate1)
-    enddate1 = "'" + enddate +"'"
-    print(enddate1)
-    prevstartdate1 = "'" + year_start + "-" + endday_mon + "-" + str(prevenddate) + "'"
-    prevenddate1 = "'" + year_end + "-" + endday_mon + "-" + str(prevstartdate) + "'"
 
-    print(prevstartdate1)
-    print(prevenddate1)
-
-    def pandas_factory(colnames, rows):
-        return pd.DataFrame(rows, columns=colnames)
-    session.row_factory = pandas_factory
-    session.default_fetch_size = None
-    userquery = "SELECT usergroup FROM test.Expcentreclickdata ALLOW FILTERING;"
-    rslt_usergroup = session.execute(userquery)
-    df_usergroup = rslt_usergroup._current_rows
-    data_usergroup = df_usergroup.values.tolist()
-
-    unique_list = []
-    for x in data_usergroup:
-        if x not in unique_list:
-            unique_list.append(x)
-    usergroup1 = str(unique_list[0]).strip('[]')
-    usergroup2 = str(unique_list[1]).strip('[]')
-    usergroup3 = str(unique_list[2]).strip('[]')
-#group1
-    usergroupquery1 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate1, enddate1, usergroup1)
-    prevusergroupquery1 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(prevenddate1, prevstartdate1, usergroup1)
-#group2
-    usergroupquery2 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate1, enddate1, usergroup2)
-    prevusergroupquery2 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(prevenddate1, prevstartdate1, usergroup2)
-#group3
-    usergroupquery3 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate1, enddate1, usergroup3)
-    prevusergroupquery3 = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(prevenddate1, prevstartdate1, usergroup3)
-
-###############################################################################
-    def pandas_factory(colnames, rows):
-        return pd.DataFrame(rows, columns=colnames)
-
-    session.row_factory = pandas_factory
-    session.default_fetch_size = None
-    ####################
-    '''For group1'''
-    ####################
-    rslt_userdata_now1 = session.execute(usergroupquery1, timeout=None)
-    rslt_userdata_prev1 = session.execute(prevusergroupquery1, timeout=None)
-    df_userdata_now1= rslt_userdata_now1._current_rows
-    df_userdata_prev1 = rslt_userdata_prev1._current_rows
-    data_userdata_now1 = df_userdata_now1.values.tolist ()
-    data_userdata_prev1 = df_userdata_prev1.values.tolist()
-    ####################
-    '''For group2'''
-    ####################
-    rslt_userdata_now2 = session.execute(usergroupquery2, timeout=None)
-    rslt_userdata_prev2 = session.execute(prevusergroupquery2, timeout=None)
-    df_userdata_now2 = rslt_userdata_now2._current_rows
-    df_userdata_prev2 = rslt_userdata_prev2._current_rows
-    data_userdata_now2 = df_userdata_now2.values.tolist ()
-    data_userdata_prev2 = df_userdata_prev2.values.tolist()
-    ####################
-    '''For group3'''
-    ####################
-    rslt_userdata_now3 = session.execute(usergroupquery3, timeout=None)
-    rslt_userdata_prev3 = session.execute(prevusergroupquery3, timeout=None)
-    df_userdata_now3 = rslt_userdata_now3._current_rows
-    df_userdata_prev3 = rslt_userdata_prev3._current_rows
-    data_userdata_now3 = df_userdata_now3.values.tolist ()
-    data_userdata_prev3 = df_userdata_prev3.values.tolist()
-#######################################################################
-####################################################################
-
-###Group1 calculation
-    data_userdata_percenatge = []
-    u1 = data_userdata_now1[0]
-    u2 = data_userdata_prev1[0]
-    print(u2)
-    print(u1)
-    diff = list(np.array(u1) - np.array(u2))
-    u1 = str(u1).strip('[]')
-    print("difference:",diff)
-    res1 = list(map(truediv, diff , u2))
-    my_new_list1 = [i * 100 for i in res1]
-    res_final1 = my_new_list1.append(u1)
-    print(my_new_list1)
-    res_final1 = my_new_list1.append(usergroup1)
-
-###Group2 calculation
-    data_userdata_percenatge = []
-    u3 = data_userdata_now2[0]
-    u4 = data_userdata_prev2[0]
-    print(u3)
-    print(u4)
-    diff = list(np.array(u3) - np.array(u4))
-    u3 = str(u3).strip('[]')
-    print("difference:",diff)
-    res2 = list(map(truediv, diff , u4))
-    my_new_list2 = [i * 100 for i in res2]
-    res_final2 = my_new_list2.append(u3)
-    print(my_new_list2)
-    res_final2 = my_new_list2.append(usergroup2)
-
-###Group3 calculation
-    data_userdata_percenatge = []
-    u5 = data_userdata_now3[0]
-    u6 = data_userdata_prev3[0]
-    print(u5)
-    print(u6)
-    diff = list(np.array(u5) - np.array(u6))
-    u5 = str(u5).strip('[]')
-    print("difference:",diff)
-    res3 = list(map(truediv, diff , u6))
-    my_new_list3 = [i * 100 for i in res3]
-    res_final3 = my_new_list3.append(u5)
-    print(my_new_list3)
-    res_final3 = my_new_list3.append(usergroup3)
-
-#     data_category_percentage = (data_category_now - data_category_prev)/data_category_prev * 100
-#
-#     list_userdata = sorted(data_userdata_now)
-#     list_category = sorted(data_category_now)
-    my_new_list = [my_new_list1, my_new_list2, my_new_list3]
-    def Sort(my_new_list):
-
-        my_new_list.sort(key = lambda x: x[1], reverse = True)
-        return my_new_list
-    print("sorted list: ",Sort(my_new_list))
-    #return Response(data_percenatge.to_json(), mimetype='application/json')
-
-    jsp = json.dumps(my_new_list, indent=4, sort_keys=True, default=str)
-    return Response(jsp)
 ###############################################################################
 ###############################################################################
 '''API to get category data within a specific period'''
 ###############################################################################
 ###############################################################################
-@app.route('/userdataret3',methods=['GET'])
+@app.route('/categorydata',methods=['GET'])
 def retrieve5():
     cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
     startdate = request.args['startdate']
@@ -415,44 +248,31 @@ def retrieve5():
     category = request.args['category']
     session = cluster.connect('test')
     session.row_factory = dict_factory
-    print(startdate)
     startdate_st = startdate.strip()
-    string = 'hello'
-    print(string.strip())
     startdate_st = startdate.strip('()')
-    print(startdate.strip())
     enddate_st = enddate.strip('()')
-    print(enddate.strip('()'))
     start = datetime.datetime.strptime(startdate_st, "%Y-%m-%d")
     end = datetime.datetime.strptime(enddate_st, "%Y-%m-%d")
     delta = end - start
-    print(delta.days)
     durationtime = delta.days + 1
-    print(durationtime)
-    print("durationtime", durationtime)
     startday = start.strftime("%d")
     endday = end.strftime("%d")
     endstart = start.strftime("%d")
     endday_mon = end.strftime("%m")
     year_start = start.strftime("%Y")
     year_end = end.strftime("%Y")
-    print(startday)
-    print(endday_mon)
-    prevenddate = int(startday) - 1
-    print('prev end',prevenddate)
-    prevstartdate = prevenddate - durationtime + 1
-    print('prev start',prevstartdate)
+    dt_prev_start = start - timedelta(durationtime)
+    dt_prev_end = end - timedelta(durationtime)
+    d1 = str(dt_prev_end)
+    prevenddate = d1.strip("00:00:00")
+    d2 = str(dt_prev_start)
+    prevstartdate = d2.strip("00:00:00")
     startdate1 = "'" + startdate +"'"
-    print(startdate1)
     enddate1 = "'" + enddate +"'"
-    print(enddate1)
-    prevstartdate1 = "'" + year_start + "-" + endday_mon + "-" + str(prevenddate) + "'"
-    prevenddate1 = "'" + year_end + "-" + endday_mon + "-" + str(prevstartdate) + "'"
-
-    print(prevstartdate1)
-    print(prevenddate1)
-
-
+    prevstartdate = prevstartdate.strip()
+    prevstartdate =  "'"+ prevstartdate +"'"
+    prevenddate = prevenddate.strip()
+    prevenddate =  "'"+ prevenddate +"'"
     def pandas_factory(colnames, rows):
         return pd.DataFrame(rows, columns=colnames)
     session.row_factory = pandas_factory
@@ -478,110 +298,7 @@ def retrieve5():
 ##############Execute the query and save in a list#####################
     for i in range(category_length):
         subcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND subcategory={} ALLOW FILTERING;".format(startdate1, enddate1, subcategory_unique[i])
-        prevsubcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND subcategory={} ALLOW FILTERING;".format(prevenddate1, prevstartdate1, subcategory_unique[i])
-        rslt_category_now = session.execute(subcategoryquery, timeout=None)
-        rslt_category_prev = session.execute(prevsubcategoryquery, timeout=None)
-        df_category_now = rslt_category_now._current_rows
-        df_category_prev = rslt_category_prev._current_rows
-        data_category_now = df_category_now.values.tolist()
-        data_category_prev = df_category_prev.values.tolist()
-        data_now.append(str(data_category_now))
-        data_prev.append(str(data_category_prev))
-###############Calculations on the data#########################################
-    z = {}
-    for i in range(category_length):
-        u1 = data_now[i]
-        u2 = data_prev[i]
-        u1 = str(u1).strip('[]')
-        u2 = str(u2).strip('[]')
-        diff = int(u1) - int(u2)
-        res = diff/int(u2)
-        res = res*100
-        my_new_list = [res]
-        res_final = my_new_list.append(u1)
-        res_final = my_new_list.append(subcategory_unique[i])
-        final_result.append(str(my_new_list))
-        x = {"subcategory":subcategory_unique[i],"count":u1, "change%":res, "duration":durationtime}
-        print(x)
-        y = json.dumps(x)
-        z[i] = json.loads(y)
-        print(z)
-    return z
-#################################################################################
-'''API for usergroup (no hardcoding)'''
-#################################################################################
-@app.route('/userdataret4',methods=['GET'])
-def retrieve6():
-    cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
-    startdate = request.args['startdate']
-    enddate = request.args['enddate']
-#    category = request.args['category']
-    session = cluster.connect('test')
-    session.row_factory = dict_factory
-    print(startdate)
-    startdate_st = startdate.strip()
-    string = 'hello'
-    print(string.strip())
-    startdate_st = startdate.strip('()')
-    print(startdate.strip())
-    enddate_st = enddate.strip('()')
-    print(enddate.strip('()'))
-    start = datetime.datetime.strptime(startdate_st, "%Y-%m-%d")
-    end = datetime.datetime.strptime(enddate_st, "%Y-%m-%d")
-    delta = end - start
-    print(delta.days)
-    durationtime = delta.days + 1
-    print(durationtime)
-    print("durationtime", durationtime)
-    startday = start.strftime("%d")
-    endday = end.strftime("%d")
-    endstart = start.strftime("%d")
-    endday_mon = end.strftime("%m")
-    year_start = start.strftime("%Y")
-    year_end = end.strftime("%Y")
-    print(startday)
-    print(endday_mon)
-    prevenddate = int(startday) - 1
-    print('prev end',prevenddate)
-    prevstartdate = prevenddate - durationtime + 1
-    print('prev start',prevstartdate)
-    startdate1 = "'" + startdate +"'"
-    print(startdate1)
-    enddate1 = "'" + enddate +"'"
-    print(enddate1)
-    prevstartdate1 = "'" + year_start + "-" + endday_mon + "-" + str(prevenddate) + "'"
-    prevenddate1 = "'" + year_end + "-" + endday_mon + "-" + str(prevstartdate) + "'"
-
-    print(prevstartdate1)
-    print(prevenddate1)
-
-
-    def pandas_factory(colnames, rows):
-        return pd.DataFrame(rows, columns=colnames)
-    session.row_factory = pandas_factory
-    session.default_fetch_size = None
-    userquery = "SELECT usergroup FROM test.Expcentreclickdata ALLOW FILTERING;"
-    rslt_usergroup = session.execute(userquery)
-    df_usergroup = rslt_usergroup._current_rows
-    data_usergroup = df_usergroup.values.tolist()
-    unique_list = []
-    for x in data_usergroup:
-        if x not in unique_list:
-            unique_list.append(x)
-    category_length = len(unique_list)
-    subcategory_unique = []
-    for i in range(category_length):
-        subcategory_unique.append(str(unique_list[i]).strip('[]'))
-    subcategory_length = len(subcategory_unique)#Get the stripped down vresion of the unique list
-    data_category_prev = []
-    data_now = []
-    data_prev = []
-    final_result = []
-    data_date = []
-##############Execute the query and save in a list#####################
-    for i in range(category_length):
-        subcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(startdate1, enddate1, subcategory_unique[i])
-        prevsubcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND usergroup={} ALLOW FILTERING;".format(prevenddate1, prevstartdate1, subcategory_unique[i])
+        prevsubcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND subcategory={} ALLOW FILTERING;".format(prevstartdate, prevenddate, subcategory_unique[i])
         rslt_category_now = session.execute(subcategoryquery, timeout=None)
         rslt_category_prev = session.execute(prevsubcategoryquery, timeout=None)
         df_category_now = rslt_category_now._current_rows
@@ -604,21 +321,18 @@ def retrieve6():
         res_final = my_new_list.append(u1)
         res_final = my_new_list.append(subcategory_unique[i])
         final_result.append(str(my_new_list))
-        print(subcategory_unique[i])
-        sub = str(subcategory_unique[i]).strip('')
-        print("SUB:",sub)
-        x = {"User Group":subcategory_unique[i],"count":int(u1), "change%":res, "duration":durationtime}
+        x = {"subcategory":subcategory_unique[i],"count":u1, "change%":res, "duration":durationtime}
+        print(x)
         y = json.dumps(x)
         z.append(json.loads(y))
-        print(z)
         row_json = json.dumps(z)
 
-    return row_json
 
-#################################################################################
+    return row_json
+##################################################################################
 '''API for usergroup (no hardcoding)'''
 #################################################################################
-@app.route('/userdataret5',methods=['GET'])
+@app.route('/usergroupdata',methods=['GET'])
 def retrieve7():
     cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
     startdate = request.args['startdate']
