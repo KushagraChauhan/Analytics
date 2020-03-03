@@ -1,0 +1,8 @@
+flask
+flask_cors
+json
+datetime
+pandas
+numpy
+cassandra-driver
+flask_cqlalchemy
