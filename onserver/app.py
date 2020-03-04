@@ -312,25 +312,29 @@ def retrieve5():
 ###############Calculations on the data#########################################
     z = []
     for i in range(category_length):
-        u1 = data_now[i]
-        u2 = data_prev[i]
-        u1 = str(u1).strip('[]')
-        u2 = str(u2).strip('[]')
-        diff = int(u1) - int(u2)
-        res = diff/int(u2)
-        res = res*100
-        my_new_list = [res]
-        res_final = my_new_list.append(u1)
-        res_final = my_new_list.append(subcategory_unique[i])
-        final_result.append(str(my_new_list))
-        x = {"subcategory":subcategory_unique[i],"count":u1, "change%":res, "duration":durationtime}
-        print(x)
-        y = json.dumps(x)
-        z.append(json.loads(y))
-        row_json = json.dumps(z)
+        try:
+            u1 = data_now[i]
+            u2 = data_prev[i]
+            print("u2",u2)
+            u1 = str(u1).strip('[]')
+            u2 = str(u2).strip('[]')
+            diff = int(u1) - int(u2)
+            res = diff/int(u2)
+            res = res*100
+            my_new_list = [res]
+            res_final = my_new_list.append(u1)
+            res_final = my_new_list.append(subcategory_unique[i])
+            final_result.append(str(my_new_list))
+            x = {"subcategory":subcategory_unique[i],"count":u1, "change%":res, "duration":durationtime}
+            print(x)
+            y = json.dumps(x)
+            z.append(json.loads(y))
+        except:
+            raise TypeError("Division by 0")
+            return jsonify({'error': TypeError})
 
 
-    return row_json
+    return jsonify({'data':z})
 ##################################################################################
 '''API for usergroup (no hardcoding)'''
 #################################################################################
@@ -411,25 +415,29 @@ def retrieve7():
 ######################Calculation##############################################
     z = []
     for i in range(category_length):
-        u1 = data_now[i]
-        u2 = data_prev[i]
-        print("u2",u2)
-        u1 = str(u1).strip('[]')
-        u2 = str(u2).strip('[]')
-        diff = int(u1) - int(u2)
-        res = diff/int(u2)
-        res = res*100
-        my_new_list = [res]
-        res_final = my_new_list.append(u1)
-        res_final = my_new_list.append(subcategory_unique[i])
-        final_result.append(str(my_new_list))
-        print(subcategory_unique[i])
-        sub = str(subcategory_unique[i]).strip('')
-        print("SUB:",sub)
-        x = {"User Group":subcategory_unique[i],"count":int(u1), "change%":res, "duration":durationtime}
-        y = json.dumps(x)
-        z.append(json.loads(y))
-        print(z)
+        try:
+            u1 = data_now[i]
+            u2 = data_prev[i]
+            print("u2",u2)
+            u1 = str(u1).strip('[]')
+            u2 = str(u2).strip('[]')
+            diff = int(u1) - int(u2)
+            res = diff/int(u2)
+            res = res*100
+            my_new_list = [res]
+            res_final = my_new_list.append(u1)
+            res_final = my_new_list.append(subcategory_unique[i])
+            final_result.append(str(my_new_list))
+            print(subcategory_unique[i])
+            sub = str(subcategory_unique[i]).strip('')
+            print("SUB:",sub)
+            x = {"User Group":subcategory_unique[i],"count":int(u1), "change%":res, "duration":durationtime}
+            y = json.dumps(x)
+            z.append(json.loads(y))
+            print(z)
+        except:
+            raise TypeError
+            return jsonify({'Error':TypeError})
 
     return jsonify({'data':z})
 
