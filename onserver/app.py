@@ -243,6 +243,7 @@ def retreive2():
 ###############################################################################
 ###############################################################################
 @app.route('/categorydata',methods=['GET'])
+@auth.login_required
 def retrieve5():
     cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
     startdate = request.args['startdate']
@@ -335,14 +336,14 @@ def retrieve5():
             "status":"100",
             "details":"There is no value in the previous duration"
             }
-            return make_response(jsonify({'errors': zero_error}), 400) 
-
+            return make_response(jsonify({'errors': zero_error}), 400)
 
     return jsonify({'data':z})
 ##################################################################################
 '''API for usergroup (no hardcoding)'''
 #################################################################################
 @app.route('/usergroupdata',methods=['GET'])
+@auth.login_required
 def retrieve7():
     cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
     startdate = request.args['startdate']
@@ -553,15 +554,6 @@ def not_found(error):
     "details":"Please check your url"
     }
     return make_response(jsonify({'errors': not_found_error}), 404)
-
-@app.errorhandler(400)
-def zero_error(error):
-    zero_error={
-    "title":"Division by zero",
-    "status":"100",
-    "details":"There is no value in the previous duration"
-    }
-    return make_response(jsonify({'errors': zero_error}), 400)
 ########################################################################################
 '''Authorization error'''
 ########################################################################################
@@ -573,7 +565,12 @@ def get_password(username):
 
 @auth.error_handler
 def unauthorized():
-    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+    auth_error={
+    "title":"Unauthorized access",
+    "status":"401",
+    "details":"Please check your credentials"
+    }
+    return make_response(jsonify({'error': auth_error}), 401)
 #######################################################################################
 
 if __name__ == "__main__":
