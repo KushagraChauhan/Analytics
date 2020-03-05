@@ -326,9 +326,9 @@ def retrieve5():
             res_final = my_new_list.append(u1)
             res_final = my_new_list.append(subcategory_unique[i])
             final_result.append(str(my_new_list))
-            x = {"subcategory":subcategory_unique[i],"count":u1, "change%":res, "duration":durationtime}
+            x = {"subcategory":subcategory_unique[i],"count":u1, "change%":res, "duration":durationtime, "prevcount":int(u2)}
             print(x)
-            y = json.dumps(x)
+            y = json.dumps(x, sort_keys=True)
             z.append(json.loads(y))
         except ZeroDivisionError:
             zero_error={
@@ -337,8 +337,10 @@ def retrieve5():
             "details":"There is no value in the previous duration"
             }
             return make_response(jsonify({'errors': zero_error}), 400)
+        # print ("Sorted:-----------------",sorted(z, key = lambda i: i['count'],reverse=True))
+        final = sorted(z, key = lambda i: i['count'],reverse=True)
 
-    return jsonify({'data':z})
+    return jsonify({'data':final})
 ##################################################################################
 '''API for usergroup (no hardcoding)'''
 #################################################################################
@@ -414,11 +416,9 @@ def retrieve7():
         data_now.append(str(data_category_now))
         data_prev.append(str(data_category_prev))
         data_date.append(str(data_clickdate))
-
-    print(data_now)
-    print(data_prev)
 ######################Calculation##############################################
     z = []
+    sub = []
     for i in range(category_length):
         try:
             u1 = data_now[i]
@@ -434,10 +434,10 @@ def retrieve7():
             res_final = my_new_list.append(subcategory_unique[i])
             final_result.append(str(my_new_list))
             print(subcategory_unique[i])
-            sub = str(subcategory_unique[i]).strip('')
+            sub.append(str(subcategory_unique[i]).replace("'", ""))
             print("SUB:",sub)
-            x = {"User Group":subcategory_unique[i],"count":int(u1), "change%":res, "duration":durationtime}
-            y = json.dumps(x)
+            x = {"User Group":sub[i],"count":int(u1), "change%":res, "duration":durationtime}
+            y = json.dumps(x, sort_keys=True)
             z.append(json.loads(y))
             print(z)
         except ZeroDivisionError:
@@ -450,99 +450,11 @@ def retrieve7():
 
     return jsonify({'data':z})
 
-###############################################################################
-'''API to get category data within a specific period with index'''
-###############################################################################
-###############################################################################
-@app.route('/categorydata1',methods=['GET'])
-def retrieve9():
-    cluster = Cluster(contact_points=['127.0.0.1'], port=9042)
-    startdate = request.args['startdate']
-    enddate = request.args['enddate']
-    category = request.args['category']
-    session = cluster.connect('test')
-    session.row_factory = dict_factory
-    startdate_st = startdate.strip()
-    startdate_st = startdate.strip('()')
-    enddate_st = enddate.strip('()')
-    start = datetime.datetime.strptime(startdate_st, "%Y-%m-%d")
-    end = datetime.datetime.strptime(enddate_st, "%Y-%m-%d")
-    delta = end - start
-    durationtime = delta.days + 1
-    startday = start.strftime("%d")
-    endday = end.strftime("%d")
-    endstart = start.strftime("%d")
-    endday_mon = end.strftime("%m")
-    year_start = start.strftime("%Y")
-    year_end = end.strftime("%Y")
-    dt_prev_start = start - timedelta(durationtime)
-    dt_prev_end = end - timedelta(durationtime)
-    d1 = str(dt_prev_end)
-    prevenddate = d1.strip("00:00:00")
-    d2 = str(dt_prev_start)
-    prevstartdate = d2.strip("00:00:00")
-    startdate1 = "'" + startdate +"'"
-    enddate1 = "'" + enddate +"'"
-    prevstartdate = prevstartdate.strip()
-    prevstartdate =  "'"+ prevstartdate +"'"
-    prevenddate = prevenddate.strip()
-    prevenddate =  "'"+ prevenddate +"'"
-    def pandas_factory(colnames, rows):
-        return pd.DataFrame(rows, columns=colnames)
-    session.row_factory = pandas_factory
-    session.default_fetch_size = None
-    categoryquery = "SELECT subcategory FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND category={} ALLOW FILTERING;".format(startdate1, enddate1, category)
-    rslt_category = session.execute(categoryquery)
-    df_category = rslt_category._current_rows
-    data_category = df_category.values.tolist()
-    unique_list = []
-#########Get all the unique subcategories in the given category#################
-    for x in data_category:
-        if x not in unique_list:
-            unique_list.append(x)
-    category_length = len(unique_list)
-    subcategory_unique = []
-    for i in range(category_length):
-        subcategory_unique.append(str(unique_list[i]).strip('[]'))
-    subcategory_length = len(subcategory_unique)#Get the stripped down vresion of the unique list
-    data_category_prev = []
-    data_now = []
-    data_prev = []
-    final_result = []
-##############Execute the query and save in a list#####################
-    for i in range(category_length):
-        subcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND subcategory={} ALLOW FILTERING;".format(startdate1, enddate1, subcategory_unique[i])
-        prevsubcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND subcategory={} ALLOW FILTERING;".format(prevstartdate, prevenddate, subcategory_unique[i])
-        rslt_category_now = session.execute(subcategoryquery, timeout=None)
-        rslt_category_prev = session.execute(prevsubcategoryquery, timeout=None)
-        df_category_now = rslt_category_now._current_rows
-        df_category_prev = rslt_category_prev._current_rows
-        data_category_now = df_category_now.values.tolist()
-        data_category_prev = df_category_prev.values.tolist()
-        data_now.append(str(data_category_now))
-        data_prev.append(str(data_category_prev))
-###############Calculations on the data###############################################
-    z = {}
-    for i in range(category_length):
-        u1 = data_now[i]
-        u2 = data_prev[i]
-        u1 = str(u1).strip('[]')
-        u2 = str(u2).strip('[]')
-        diff = int(u1) - int(u2)
-        res = diff/int(u2)
-        res = res*100
-        my_new_list = [res]
-        res_final = my_new_list.append(u1)
-        res_final = my_new_list.append(subcategory_unique[i])
-        final_result.append(str(my_new_list))
-        x = {"subcategory":subcategory_unique[i],"count":u1, "change%":res, "duration":durationtime}
-        print(x)
-        y = json.dumps(x)
-        z[i] = json.loads(y)
-        #row_json = json.dumps(z)
 
-
-    return z
+#############################################
+#Sort_keys = true
+#show previous data in response
+#
 #######################################################################################
 '''Not found error'''
 ######################################################################################
