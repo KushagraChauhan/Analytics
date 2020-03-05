@@ -1,0 +1,42 @@
+<html>
+<head>
+</head>
+<body>
+  <script>
+  var arrayWithElements = new Array();
+
+ document.onclick = clickListener;
+
+function clickListener(e)
+{
+    var clickedElement=(window.event)
+                        ? window.event.srcElement : e.target,
+        tags=document.getElementsByTagName(clickedElement.tagName);
+         //console.log(tags)
+    for(var i=0;i<tags.length;++i)
+    {
+      if(tags[i]==clickedElement)
+      {
+        arrayWithElements.push({tag:clickedElement.tagName,index:i});
+        //console.log(arrayWithElements);
+      }
+    //  console.log(arrayWithElements);
+    }
+    console.log(arrayWithElements);
+}
+
+
+  </script>
+<div><b>a class</b><div>
+
+  <br><br><br>
+              <ul>
+                <li><a href="#intro">Intro</a></li>
+								<li><a href="#work">Work</a></li>
+								<li><a href="#about">About</a></li>
+								<li><a href="#contact">Contact</a></li>
+							</ul>
+
+u have clicked on-
+<body>
+<html>
