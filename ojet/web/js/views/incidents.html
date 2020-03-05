@@ -1,0 +1,228 @@
+
+<div class="demo-disable-bg-image"><!-- Main Container Begin here -->
+  <div  class="demo-grid-sizes demo-flex-display">
+  <div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-flex-item"> 
+  <div id="sampleDemo" style="" class="demo-padding demo-container">
+        <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+          
+          <div id="tabbardemo" >
+            
+
+            <div id="demo-container" class="oj-flex demo-edge-top">
+              <oj-tab-bar id="hnavlist" 
+                          edge="[[currentEdge]]"
+                          selection="{{selectedItem}}">
+                <ul>
+                  <li class="hpc" id="home">
+                    <a  href="#" aria-controls="home-tab-panel" id="home-tab" >
+                      Home
+                    </a>
+                  </li>
+                  <li class="hpc" id="blogs">
+                    <a href="#"  aria-controls="blogs-tab-panel" id="blogs-tab">
+                      Search Term Based
+                    </a>
+                  </li>
+                  <li class="hpc" id="settings">
+                    <a href="#" aria-controls="settings-tab-panel" id="settings-tab" >
+                      Watchlist
+                    </a>
+                  </li>
+                  <li class="hpc" id="about">
+                    <a href="#"  aria-controls="about-tab-panel" id="about-tab">
+                      Favourites
+                    </a>
+                  </li>
+                  <li class="hpc" id="contact" >
+                    <a href="#" aria-controls="contact-tab-panel" id="contact-tab" >
+                      Charts
+                    </a>
+                  </li>
+                </ul>
+              </oj-tab-bar>
+          
+<oj-switcher value="[[selectedItem]]">
+   
+                 <div slot="home"
+                     id="home-tab-panel"
+                     role="homepanel" 
+                     aria-labelledby="home-tab">
+                  <div class="demo-tab-content">
+                    <h2>Chart</h2>
+                        <!---Chart Tab charts --->
+
+                         <div id='chart-container'>
+            <h5 style="display:inline-block;width:48%;height:15px;font-weight:bold;">withRescale</h5>
+            <br/>
+            <oj-chart id="barChart2"
+                type="bar" 
+                data="[[dataProvider]]"
+                animation-on-display="auto"
+                animation-on-data-change="auto"
+                hide-and-show-behavior="withoutRescale"
+                hidden-categories="{{hiddenCategories}}"
+                orientation="[[orientationValue]]"
+                stack="[[stackValue]]"
+                legend.text-style='[[{"fontWeight":"bold","fontStyle":"italic","color":"#cbd9de"}]]'
+                style="width:1000px;height:350px;float:left;">
+          
+                <template slot='itemTemplate' data-oj-as='item'>
+                    <oj-chart-item 
+                      value='[[item.data.count]]' 
+                      group-id='[[ [item.data.duration] ]]' 
+                      series-id='[[item.data.usergroup]]'> 
+                    </oj-chart-item>
+                </template>
+                <template slot='groupTemplate'>
+                  <oj-chart-group
+                      drilling='on'
+                      label-style='[[{"fontWeight":"bold","fontStyle":"italic","color":"#cbd9de"}]]'>   
+                    </oj-chart-group>
+                  </template>
+            </oj-chart>
+            <div style="width:100%;float:left;padding-bottom:8px;">
+              <h5>hiddenCategories:</h5>
+              <h5 :style.font-style="[[hiddenCategories().length === 0 ? 'italic' : 'normal']]"><oj-bind-text value="[[categoryInfo]]"></oj-bind-text></h5>
+            </div>
+            <oj-toolbar id="myToolbar" aria-label="Chart Display Options Toolbar" aria-controls="barChart barChart2"
+                        style="max-width:500px;width:100%;">
+                <!-- vertical/horizontal toggle button -->
+                <demo-chart-orientation-control id="orientationControl" type="bar" focus-management="none" orientation="{{orientationValue}}">
+                </demo-chart-orientation-control>
+                <span role="separator" aria-orientation="vertical" class="oj-toolbar-separator"></span>
+                <!-- unstacked/stacked toggle button -->
+                <demo-chart-stack-control id="stackControl" type="bar" focus-management="none" stack="{{stackValue}}">
+                </demo-chart-stack-control>
+            </oj-toolbar>
+          </div>
+                  </div>
+                </div>
+       
+             <div slot="blogs"
+                     id="blogs-tab-panel"
+                     role="tabpanel" 
+                     aria-labelledby="blogs-tab">
+                  <div class="demo-tab-content">
+                    <!--Blog Content Begins here -->
+                    <!-- Tab content Begin here -->
+    <div  class="demo-grid-sizes demo-flex-display">
+    <div class="oj-flex oj-flex-items-pad" style="margin-top:5%;">
+    <div class="oj-sm-12 oj-md-8 oj-lg-9 oj-xl-9 oj-flex-item">
+<!--first column Begins Here -->
+    <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-flex-item">
+     <!-- First Box Data Container Column Begins -->
+    <div class="" style="text-align:center;"><strong class="custom-heading">Searches Done</strong></div>
+    <br><br>
+    <!-- Chart Begin here -->
+              <div id='chart-container'>
+              <oj-chart id="barChart"
+                    type="bar" 
+                    orientation="[[orientationValue]]"
+                    stack="[[stackValue]]"
+                    data="[[bardataProvider]]"
+                    animation-on-display="auto"
+                    animation-on-data-change="auto"
+                    hover-behavior="dim"
+                    legend.text-style='[[{"fontWeight":"bold","fontStyle":"italic","color":"#cbd9de"}]]'
+                    style="max-width:964px;width:100%;height:350px !important;">
+          
+                  <template slot='itemTemplate' data-oj-as='item'>
+                      <oj-chart-item 
+                        value='[[item.data.value]]' 
+                        group-id='[[ [item.data.group] ]]' 
+                        series-id='[[item.data.series]]'> 
+                      </oj-chart-item>
+                  </template>
+                  <template slot='groupTemplate'>
+                  <oj-chart-group
+                      drilling='on'
+                      label-style='[[{"fontWeight":"bold","fontStyle":"italic","color":"#cbd9de"}]]'>   
+                    </oj-chart-group>
+                  </template>
+              </oj-chart>
+          </div>
+
+          
+    <!-- Chart Ends here  -->
+
+ <!-- First Box Data Container Column Ends -->
+    </div>
+    
+    </div>
+    </div><!--First Column Ends Here -->
+    <!--Second Column Begin here -->
+     </div>
+<!--Second Column Ends here -->
+      </div>
+                    <!--Blog Content Ends here -->
+                  </div>
+                </div>
+
+               <div slot="settings"
+                     id="settings-tab-panel"
+                     role="settingspanel" 
+                     aria-labelledby="settings-tab">
+                  <div class="demo-tab-content">
+                    <h2>Chart</h2>
+                        <!---Chart Tab charts --->
+
+                         <div id='chart-container'>
+            <h5 style="display:inline-block;width:48%;height:15px;font-weight:bold;">withRescale</h5>
+            <br/>
+            <oj-chart id="barChart2"
+                type="bar" 
+                data="[[dataProvider2]]"
+                animation-on-display="auto"
+                animation-on-data-change="auto"
+                hide-and-show-behavior="withoutRescale"
+                hidden-categories="{{hiddenCategories}}"
+                orientation="[[orientationValue]]"
+                stack="[[stackValue]]"
+                legend.text-style='[[{"fontWeight":"bold","fontStyle":"italic","color":"#cbd9de"}]]'
+                style="width:1000px;height:350px;float:left;">
+          
+                <template slot='itemTemplate' data-oj-as='item'>
+                    <oj-chart-item 
+                      value='[[item.data.count]]' 
+                      group-id='[[ [item.data.duration] ]]' 
+                      series-id='[[item.data.subcategory]]'> 
+                    </oj-chart-item>
+                </template>
+                <template slot='groupTemplate'>
+                  <oj-chart-group
+                      drilling='on'
+                      label-style='[[{"fontWeight":"bold","fontStyle":"italic","color":"#cbd9de"}]]'>   
+                    </oj-chart-group>
+                  </template>
+            </oj-chart>
+            <div style="width:100%;float:left;padding-bottom:8px;">
+              <h5>hiddenCategories:</h5>
+              <h5 :style.font-style="[[hiddenCategories().length === 0 ? 'italic' : 'normal']]"><oj-bind-text value="[[categoryInfo]]"></oj-bind-text></h5>
+            </div>
+            <oj-toolbar id="myToolbar" aria-label="Chart Display Options Toolbar" aria-controls="barChart barChart2"
+                        style="max-width:500px;width:100%;">
+                <!-- vertical/horizontal toggle button -->
+                <demo-chart-orientation-control id="orientationControl" type="bar" focus-management="none" orientation="{{orientationValue}}">
+                </demo-chart-orientation-control>
+                <span role="separator" aria-orientation="vertical" class="oj-toolbar-separator"></span>
+                <!-- unstacked/stacked toggle button -->
+                <demo-chart-stack-control id="stackControl" type="bar" focus-management="none" stack="{{stackValue}}">
+                </demo-chart-stack-control>
+            </oj-toolbar>
+          </div>
+                  </div>
+                </div>
+
+              </oj-switcher>
+            </div>  
+          </div>
+  
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- Main Container Ends here -->

@@ -1,0 +1,112 @@
+// Copyright (c) 2014, 2019, Oracle and/or its affiliates. The Universal Permissive License (UPL), Version 1.0
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: do not directly import this file, instead import the 
+//          version in your base theme's directory, 
+//          for example alta/widgets/_oj.alta.filepicker.scss
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+@import "../../utilities/oj.utilities";
+
+@if $includeFilePickerClasses != false  {
+  @include module-include-once("common.filepicker") {
+        
+    // This is to prevent the flash of unstyled content before the html becomes JET components.
+    @if $initialVisibility == hidden {
+      oj-file-picker:not(.oj-complete) {
+        visibility: hidden;
+      }
+    }
+
+    .oj-filepicker {
+      display: block;
+    }
+
+    .oj-filepicker-custom {
+      display: inline-block;
+    }
+
+    .oj-filepicker:not(.oj-filepicker-custom) {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .oj-filepicker-clickable {
+      height: 100%;
+    }
+
+    .oj-filepicker-dropzone,
+    .oj-filepicker-disabled {
+      display: flex;
+
+      // center containing items
+      justify-content: space-between;
+
+      // vertically center containing items
+      align-items: center;
+
+      height: 100%;
+      box-sizing: border-box;
+
+        border-width: $filePickerBorderWidth;
+        border-style: $filePickerBorderStyle;
+        border-radius: $filePickerBorderRadius;
+        padding: $filePickerPadding;
+    }
+
+    .oj-filepicker-dropzone {
+      background-color: $filePickerBgColor;
+      border-color: $filePickerBorderColor;
+    }
+
+    .oj-filepicker-disabled {
+      background-color: $filePickerBgColorDisabled;
+      border-color: $filePickerBorderColorDisabled;
+    }
+
+    .oj-filepicker-dropzone.oj-invalid-drop {
+      border-color: $borderColorError;
+    }
+    .oj-filepicker-dropzone.oj-valid-drop,
+    .oj-filepicker.oj-valid-drop,
+    .oj-filepicker-dropzone:active { 
+        background-color: $filePickerBgColorActive;
+
+    }
+
+    /* 
+     * Suppress focus ring
+     */
+    .oj-filepicker-dropzone:not(.oj-focus-highlight):focus {
+      outline: none;
+    }
+
+    .oj-filepicker-text { 
+
+        font-size: $filePickerTextFontSize;
+        color: $filePickerTextColor;
+        margin-bottom:  6px;
+        font-weight: $filePickerTextFontWeight;
+    }
+
+    .oj-filepicker-secondary-text {
+        color: $filePickerTextColor;
+        font-size: $filePickerSecondaryTextFontSize;
+        font-weight: $filePickerSecondaryTextFontWeight;
+    }
+
+    .oj-filepicker-icon {
+        font-size: 24px;
+        color: $iconColorDefault;
+    }
+
+    .oj-filepicker-disabled .oj-filepicker-text,
+    .oj-filepicker-disabled .oj-filepicker-secondary-text {
+      color: $textColorDisabled;
+    }
+
+    .oj-filepicker-disabled .oj-filepicker-icon {
+      color: $iconColorDisabled;
+    }
+    
+  }
+}

@@ -1,0 +1,315 @@
+<div class="demo-disable-bg-image"><!-- Main Container Begin here -->
+  <div  class="demo-grid-sizes demo-flex-display">
+  <div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-flex-item"> 
+  <div id="sampleDemo" style="" class="demo-padding demo-container">
+        <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+          
+          <div id="tabbardemo" >
+            
+
+            <div id="demo-container" class="oj-flex demo-edge-top">
+          
+<oj-switcher value="[[selectedItem]]">
+    <div slot="home"
+        id="home-tab-panel"
+        role="tabpanel" 
+        aria-labelledby="home-tab">
+    <div class="demo-tab-content">
+    <!-- Tab content Begin here -->
+    <div  class="demo-grid-sizes demo-flex-display">
+    <div class="oj-flex oj-flex-items-pad " style="margin-top:5%;">
+    <div class="oj-sm-12 oj-md-10 oj-lg-12 oj-xl-12 oj-flex-item">
+<!--first column Begins Here -->
+    <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-sm-12 oj-md-4 oj-lg-4 oj-flex-item">
+     <!-- First Box Data Container Column Begins -->
+      <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-sm-2 oj-flex-item">
+      <img src="/css/images/Risk & Performance.png" style="width:50px;" alt="Finance-Strategy"/>
+      </div>
+      <div class="oj-sm-8 oj-flex-item"><strong class="custom-heading">Search Term Based</strong></div>
+      <div class="oj-sm-2 oj-flex-item"></div>
+      </div>
+
+      <div class="scrollbar" id="style-4">
+          <div class="force-overflow">
+          <!--Dynamic Content Begins here -->
+          <div class="Internal-data" style="padding:5px;">
+         
+          <oj-list-view id="listview" aria-label="simple list" data="[[dataProvider]]">
+              <template slot="itemTemplate" data-oj-as="item">
+                 <!-- <span class="avatar" data-bind="style: { backgroundImage: 'url(\'../images/dvt/' + item.data.id + '.png\')' }"></span>-->
+                  <span class="avatar" style="background-image:url('/css/images/Bullet Bars.png')"></span>
+                  <div class="container">
+                      <div>
+                          <span class="name"><oj-bind-text value="[[item.data.subcategory]]"></oj-bind-text></span>
+                          <span class="oj-text-xs oj-text-secondary-color" style="float: right;"><oj-bind-text value="[[item.data.count]]"></oj-bind-text>views</span>
+                      </div>
+                      <div>
+                          
+<div class="oj-sm-2 oj-flex-item">
+                <div class="triangle-up-small"><span  class="text-green"><oj-bind-text value="[[item.data.change]]"></oj-bind-text>%</span></div>
+              </div>
+                      </div>
+                  </div>
+              </template>
+          </oj-list-view>
+        
+        </div>
+        </div>
+        </div>
+
+ <!-- First Box Data Container Column Ends -->
+    </div>
+    <div class="oj-sm-12 oj-md-4 oj-lg-4 oj-flex-item abc">
+      <!-- Second Box Data Container Begins here -->
+              <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-sm-2 oj-flex-item">
+                <img src="/css/images/Risk & Performance.png" style="width:50px;"/>
+              </div>
+              <div class="oj-sm8 oj-flex-item"><strong class="custom-heading">Technology</strong></div>
+              <div class="oj-sm-2 oj-flex-item"></div>
+        </div>
+        <div class="scrollbar" id="style-4">
+          <div class="force-overflow">
+          <!--Dynamic Content Begins here -->
+          <div class="Internal-data" style="padding:5px;">
+          
+          <oj-list-view id="listview" aria-label="simple list" data="[[dataProvider]]">
+              <template slot="itemTemplate" data-oj-as="item">
+                 <!-- <span class="avatar" data-bind="style: { backgroundImage: 'url(\'../images/dvt/' + item.data.id + '.png\')' }"></span>-->
+                  <div class="container">
+                      <div>
+                          <span class="name"><oj-bind-text value="[[item.data.subcategory]]"></oj-bind-text></span>
+                          <span class="oj-text-xs oj-text-secondary-color" style="float: right;"><oj-bind-text value="[[item.data.count]]"></oj-bind-text>views</span>
+                      </div>
+                      <div>
+                          
+                          <div class="oj-sm-2 oj-flex-item">
+                <div class="triangle-up-small percent"><span  class="text-green"><oj-bind-text value="[[item.data.change]]"></oj-bind-text>%</span></div>
+              </div>
+                      </div>
+                  </div>
+              </template>
+          </oj-list-view>
+
+
+
+ 
+        </div>
+        </div>
+      </div><!-- Scrollable div ends here -->
+        
+
+    </div><!-- Second Box Data Container Ends here   -->
+
+    <!-- Second Row Data Container First Begins here -->
+       <div class="oj-sm-12 oj-md-4 oj-lg-4 oj-flex-item">
+      <!-- Second Box Data Container Begins here -->
+              <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-sm-2 oj-flex-item">
+                <img src="/css/images/Risk & Performance.png" style="width:50px;"/>
+              </div>
+              <div class="oj-sm-8 oj-flex-item"><strong class="custom-heading">Location</strong></div>
+              <div class="oj-sm-2 oj-flex-item"></div>
+        </div>
+        <div class="scrollbar" id="style-4">
+          <div class="force-overflow">
+          <!--Dynamic Content Begins here -->
+          <div class="Internal-data" style="padding:5px;">
+         
+   
+        
+        <oj-list-view id="listview" aria-label="simple list" data="[[dataProvider3]]">
+              <template slot="itemTemplate" data-oj-as="item">
+                 <!-- <span class="avatar" data-bind="style: { backgroundImage: 'url(\'../images/dvt/' + item.data.id + '.png\')' }"></span>-->
+                  <div class="container">
+                      <div>
+                          <span class="name"><oj-bind-text value="[[item.data.subcategory]]"></oj-bind-text></span>
+                           <span class="oj-text-xs oj-text-secondary-color" style="float: right;"><oj-bind-text value="[[item.data.count]]"></oj-bind-text>views</span>
+                      </div>
+                      <div>
+                         
+                          <div class="oj-sm-2 oj-flex-item">
+                <div class="triangle-up-small percent"><span  class="text-green"><oj-bind-text value="[[item.data.change]]"></oj-bind-text>%</span></div>
+              </div>
+                      </div>
+                  </div>
+              </template>
+          </oj-list-view>
+
+
+
+ 
+        </div>
+        </div>
+      </div><!-- Scrollable div ends here -->
+        
+
+    </div><!-- Second Box Data Container Ends here   -->
+
+    <!-- Second Row Data Container First Begins here -->
+    <!-- ./Second Row Data Container First Ends here   -->
+
+<!-- vk1 Row Data Container First Begins here -->
+      <div class="oj-sm-12 oj-md-4 oj-lg-4 oj-flex-item xyz">
+      <!-- Second Box Data Container Begins here -->
+              <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-sm-2 oj-flex-item">
+                <img src="/css/images/Risk & Performance.png" style="width:50px;"/>
+              </div>
+              <div class="oj-sm-8 oj-flex-item"><strong class="custom-heading">User Group</strong></div>
+              <div class="oj-sm-2 oj-flex-item"></div>
+        </div>
+        <div class="scrollbar" id="style-4">
+          <div class="force-overflow">
+          <!--Dynamic Content Begins here -->
+          <div class="Internal-data" style="padding:5px;">
+         
+
+       <oj-list-view id="listview" aria-label="simple list" data="[[dataProvider2]]">
+              <template slot="itemTemplate" data-oj-as="item">
+                 <!-- <span class="avatar" data-bind="style: { backgroundImage: 'url(\'../images/dvt/' + item.data.id + '.png\')' }"></span>-->
+                  <div class="container">
+                      <div>
+                          <span class="name"><oj-bind-text value="[[item.data.usergroup]]"></oj-bind-text></span>
+                          <span class="oj-text-xs oj-text-secondary-color" style="float: right;"><oj-bind-text value="[[item.data.count]]"></oj-bind-text>views</span>
+                      </div>
+                      <div>
+                          
+                          <div class="oj-sm-2 oj-flex-item">
+                <div class="triangle-up-small percent"><span  class="text-green"><oj-bind-text value="[[item.data.change]]"></oj-bind-text>%</span></div>
+              </div>
+                      </div>
+                  </div>
+              </template>
+          </oj-list-view>
+
+
+
+
+ 
+        </div>
+        </div>
+      </div><!-- Scrollable div ends here -->
+        
+
+    </div><!-- Second Box Data Container Ends here   -->
+
+    <!-- Second Row Data Container First Begins here -->
+    <!-- ./vk2 Row Data Container First Ends here   -->
+
+    <!-- Second Row Data Container Second Begins here -->
+       <div class="oj-sm-12 oj-md-4 oj-lg-4 oj-flex-item xyz">
+      <!-- Second Box Data Container Begins here -->
+              <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-sm-2 oj-flex-item">
+                <img src="/css/images/Risk & Performance.png" style="width:50px;"/>
+              </div>
+              <div class="oj-sm-8 oj-flex-item"><strong class="custom-heading">Industry</strong></div>
+              <div class="oj-sm-2 oj-flex-item"></div>
+        </div>
+        <div class="scrollbar" id="style-4">
+          <div class="force-overflow">
+          <!--Dynamic Content Begins here -->
+          <div class="Internal-data" style="padding:5px;">
+          
+
+         <oj-list-view id="listview" aria-label="simple list" data="[[dataProvider4]]">
+              <template slot="itemTemplate" data-oj-as="item">
+                 <!-- <span class="avatar" data-bind="style: { backgroundImage: 'url(\'../images/dvt/' + item.data.id + '.png\')' }"></span>-->
+                  <div class="container">
+                      <div>
+                          <span class="name"><oj-bind-text value="[[item.data.subcategory]]"></oj-bind-text></span>
+                          <span class="oj-text-xs oj-text-secondary-color" style="float: right;"><oj-bind-text value="[[item.data.count]]"></oj-bind-text>views</span>
+                      </div>
+                      <div>
+                          
+                          <div class="oj-sm-2 oj-flex-item">
+                <div class="triangle-up-small percent"><span  class="text-green"><oj-bind-text value="[[item.data.change]]"></oj-bind-text>%</span></div>
+              </div>
+                      </div>
+                  </div>
+              </template>
+          </oj-list-view>
+
+
+
+ 
+        </div>
+        </div>
+      </div><!-- Scrollable div ends here -->
+        
+
+    </div><!-- Second Box Data Container Ends here   -->
+
+    <!-- Second Row Data Container First Begins here -->
+     <div class="oj-sm-12 oj-md-4 oj-lg-4 oj-flex-item xyz">
+      <!-- Second Box Data Container Begins here -->
+              <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-sm-2 oj-flex-item">
+                <img src="/css/images/Risk & Performance.png" style="width:50px;"/>
+              </div>
+              <div class="oj-sm-8 oj-flex-item"><strong class="custom-heading">Practice</strong></div>
+              <div class="oj-sm-2 oj-flex-item"></div>
+        </div>
+        <div class="scrollbar" id="style-4">
+          <div class="force-overflow">
+          <!--Dynamic Content Begins here -->
+          <div class="Internal-data" style="padding:5px;">
+          
+
+ <oj-list-view id="listview" aria-label="simple list" data="[[dataProvider5]]">
+              <template slot="itemTemplate" data-oj-as="item">
+                 <!-- <span class="avatar" data-bind="style: { backgroundImage: 'url(\'../images/dvt/' + item.data.id + '.png\')' }"></span>-->
+                  <div class="container">
+                      <div>
+                          <span class="name"><oj-bind-text value="[[item.data.subcategory]]"></oj-bind-text></span>
+                          <span class="oj-text-xs oj-text-secondary-color" style="float: right;"><oj-bind-text value="[[item.data.count]]"></oj-bind-text>views</span>
+                      </div>
+                      <div>
+                          
+                          <div class="oj-sm-2 oj-flex-item">
+                <div class="triangle-up-small percent"><span  class="text-green"><oj-bind-text value="[[item.data.change]]"></oj-bind-text>%</span></div>
+              </div>
+                      </div>
+                  </div>
+              </template>
+          </oj-list-view>
+
+
+
+
+ 
+        </div>
+        </div>
+      </div><!-- Scrollable div ends here -->
+        
+
+    </div><!-- Second Box Data Container Ends here   -->
+
+    <!-- Second Row Data Container First Begins here -->
+    <!-- Second Row Data Container Second Ends here   -->
+    </div>
+    </div><!--First Column Ends Here -->
+<!-- vk sidebar  cut-->
+
+<!-- ./vk sidebar cut -->
+     </div>
+<!--Second Column Ends here -->
+      </div>
+<!-- Tab content Ends here  -->
+      </div>
+      </div>
+              </oj-switcher>
+            </div>  
+          </div>
+  
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- Main Container Ends here -->

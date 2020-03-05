@@ -1,0 +1,7 @@
+/**
+ * @license
+ * Copyright (c) 2014, 2019, Oracle and/or its affiliates.
+ * The Universal Permissive License (UPL), Version 1.0
+ * @ignore
+ */
+define(["ojs/ojcore","ojs/ojvcomponent","ojs/ojcomponentcore"],function(a,e){"use strict";class r extends e{constructor(a){super(a),this.props=a}render(){var a,t=this.props,s=t.size,o=t.background;return a=t.src?e.h("div",{className:"oj-avatar-background-image",style:{backgroundImage:'url("'.concat(t.src,'")')}}):t.initials?e.h("div",{className:"oj-avatar-initials oj-avatar-background-image"},t.initials):e.h("div",{className:"oj-avatar-background-image"},e.h("div",{className:"oj-avatar-placeholder"})),e.h(r.tagName,null,e.h("div",{className:"oj-avatar oj-avatar-bg-"+o+" oj-avatar-"+s+(t.initials&&!t.src?" oj-avatar-has-initials":t.src?" oj-avatar-image":""),"aria-hidden":"true"},a))}}return r.tagName="oj-avatar",r.metadata={properties:{background:{type:"string",enumValues:["neutral","red","orange","forest","green","teal","mauve","purple"],value:"neutral"},initials:{type:"string"},size:{type:"string",enumValues:["xxs","xs","sm","md","lg","xl","xxl"],value:"md"},src:{type:"string"}},methods:{setProperty:{},getProperty:{},setProperties:{},getNodeBySubId:{},getSubIdByNode:{}},extension:{}},e.register(r),r});
