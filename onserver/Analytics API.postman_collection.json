@@ -1,0 +1,222 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Analytics API",
+		"_postman_id": "c777fd69-a69e-114f-9441-6cbc7aed7125",
+		"description": "API collection to retrieve data from DB and store data in DB for the analytics.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://analytics.techeela.net/usergroupdata",
+			"request": {
+				"url": {
+					"raw": "https://analytics.techeela.net/usergroupdata?startdate=2020-01-09&enddate=2020-01-12",
+					"protocol": "https",
+					"host": [
+						"analytics",
+						"techeela",
+						"net"
+					],
+					"path": [
+						"usergroupdata"
+					],
+					"query": [
+						{
+							"key": "startdate",
+							"value": "2020-01-09",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "enddate",
+							"value": "2020-01-12",
+							"equals": true,
+							"description": ""
+						},
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "userid",
+						"value": "3",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "value",
+						"value": "5",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "time1",
+						"value": "Mar",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "usergroup",
+						"value": "Prospectus",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"description": "This API is used to retrive usergroup data from the DB.\nParams-\nstartdate \nenddate\n\nFormat-\nyyyy-mm-dd"
+			},
+			"response": []
+		},
+		{
+			"name": "https://analytics.techeela.net/categorydata",
+			"request": {
+				"url": {
+					"raw": "https://analytics.techeela.net/categorydata?startdate=2020-01-09&enddate=2020-01-12&category='Practice'",
+					"protocol": "https",
+					"host": [
+						"analytics",
+						"techeela",
+						"net"
+					],
+					"path": [
+						"categorydata"
+					],
+					"query": [
+						{
+							"key": "startdate",
+							"value": "2020-01-09",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "enddate",
+							"value": "2020-01-12",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "category",
+							"value": "'Practice'",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "userid",
+						"value": "3",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "value",
+						"value": "5",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "time1",
+						"value": "Mar",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "usergroup",
+						"value": "Prospectus",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"description": "This API is used to retrieve category data from the DB.\nParams:\nstartdate\nenddate\ncategory\nFormat:\ndate: yyyy-mm-dd\ncategory: 'Technology'"
+			},
+			"response": []
+		},
+		{
+			"name": "https://analytics.techeela.net/static",
+			"request": {
+				"url": "https://analytics.techeela.net/static",
+				"method": "POST",
+				"header": [
+					{
+						"key": "userid",
+						"value": "1",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "usergroup",
+						"value": "Prospect",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userid",
+							"value": "1",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "usergroup",
+							"value": "Prospect",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Open this API in the browser and enter the data in the form.\nThis API is used to store static data in the DB.\n\n\nclick_date format: yyyy-mm-dd\nclick_time format: HH:MM:SS\n\n"
+			},
+			"response": []
+		},
+		{
+			"name": "https://analytics.techeela.net/ret",
+			"request": {
+				"url": "https://analytics.techeela.net/ret",
+				"method": "GET",
+				"header": [
+					{
+						"key": "userid",
+						"value": "3",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "value",
+						"value": "5",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "time1",
+						"value": "Mar",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "usergroup",
+						"value": "Prospectus",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"description": "This API is used to get the data of the users in who visit-\nanalytics.techeela.net\n\nColumns:\nIP, URL, time, ref, nav, platform, width, height\n"
+			},
+			"response": []
+		}
+	]
+}
