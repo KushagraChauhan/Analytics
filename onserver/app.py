@@ -251,19 +251,10 @@ def retrieve5():
     category = request.args['category']
     session = cluster.connect('test')
     session.row_factory = dict_factory
-    startdate_st = startdate.strip()
-    startdate_st = startdate.strip('()')
-    enddate_st = enddate.strip('()')
-    start = datetime.datetime.strptime(startdate_st, "%Y-%m-%d")
-    end = datetime.datetime.strptime(enddate_st, "%Y-%m-%d")
+    start = datetime.datetime.strptime(startdate, "%Y-%m-%d")
+    end = datetime.datetime.strptime(enddate, "%Y-%m-%d")
     delta = end - start
     durationtime = delta.days + 1
-    startday = start.strftime("%d")
-    endday = end.strftime("%d")
-    endstart = start.strftime("%d")
-    endday_mon = end.strftime("%m")
-    year_start = start.strftime("%Y")
-    year_end = end.strftime("%Y")
     dt_prev_start = start - timedelta(durationtime)
     dt_prev_end = end - timedelta(durationtime)
     d1 = str(dt_prev_end)
@@ -300,8 +291,8 @@ def retrieve5():
     final_result = []
 ##############Execute the query and save in a list#####################
     for i in range(category_length):
-        subcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND subcategory={} ALLOW FILTERING;".format(startdate1, enddate1, subcategory_unique[i])
-        prevsubcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>{} AND click_date<{} AND subcategory={} ALLOW FILTERING;".format(prevstartdate, prevenddate, subcategory_unique[i])
+        subcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>={} AND click_date<{} AND subcategory={} ALLOW FILTERING;".format(startdate1, enddate1, subcategory_unique[i])
+        prevsubcategoryquery = "SELECT COUNT(*) FROM test.Expcentreclickdata WHERE click_date>={} AND click_date<{} AND subcategory={} ALLOW FILTERING;".format(prevstartdate, prevenddate, subcategory_unique[i])
         rslt_category_now = session.execute(subcategoryquery, timeout=None)
         rslt_category_prev = session.execute(prevsubcategoryquery, timeout=None)
         df_category_now = rslt_category_now._current_rows
@@ -342,7 +333,9 @@ def retrieve5():
 
     return jsonify({'data':final})
 ##################################################################################
+##################################################################################
 '''API for usergroup (no hardcoding)'''
+#################################################################################
 #################################################################################
 @app.route('/usergroupdata',methods=['GET'])
 @auth.login_required
@@ -352,19 +345,10 @@ def retrieve7():
     enddate = request.args['enddate']
     session = cluster.connect('test')
     session.row_factory = dict_factory
-    startdate_st = startdate.strip()
-    startdate_st = startdate.strip('()')
-    enddate_st = enddate.strip('()')
-    start = datetime.datetime.strptime(startdate_st, "%Y-%m-%d")
-    end = datetime.datetime.strptime(enddate_st, "%Y-%m-%d")
+    start = datetime.datetime.strptime(startdate, "%Y-%m-%d")
+    end = datetime.datetime.strptime(enddate, "%Y-%m-%d")
     delta = end - start
     durationtime = delta.days + 1
-    startday = start.strftime("%d")
-    endday = end.strftime("%d")
-    endstart = start.strftime("%d")
-    endday_mon = end.strftime("%m")
-    year_start = start.strftime("%Y")
-    year_end = end.strftime("%Y")
     dt_prev_start = start - timedelta(durationtime)
     dt_prev_end = end - timedelta(durationtime)
     d1 = str(dt_prev_end)
@@ -450,8 +434,9 @@ def retrieve7():
 
     return jsonify({'data':z})
 
-
-#############################################
+####################################################################################
+####################################################################################
+###########################################
 #Sort_keys = true
 #show previous data in response
 #
