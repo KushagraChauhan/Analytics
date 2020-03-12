@@ -63,10 +63,16 @@ Solution for the above error-
 API Names:
 	
 [Retrieve User Profiles](https://analytics.techeela.net/ret)
+
 [Enter Static Data](https://analytics.techeela.net/static)
+
 [Retrieve Static Data](https://analytics.techeela.net/staticret)
+
 [User group data wrt time period](https://analytics.techeela.net/usergroupdata)
+
 [Category wise data within a time peroid](https://analytics.techeela.net/categorydata)
+
+[User group day-wise](https://analytics.techeela.net/userdaywise)
 
 ### Happy Coding
 
