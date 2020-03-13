@@ -34,6 +34,7 @@
             $(div).append(counter);
 
             $(div).append(canvas);
+            $(canvas).attr({'id': 'canvas'});
             canvas[0].width = heatmapWidth*defaults.resize;
             canvas[0].height = heatmapHeight*defaults.resize;
             $(canvas).css({"border":"1px solid black"});
@@ -93,6 +94,10 @@
             if(!defaults.disableCount){
                 defaults.count += 1;
             }
+        });
+        $('#canvas').click(function() {
+        this.href = $('#canvas')[0].toDataURL();// Change here
+        this.download = 'design.png';
         });
     };
 })(jQuery);
