@@ -3,21 +3,19 @@
 #	id uuid PRIMARY KEY,
 #	image blob
 #	)
-#
 
-# # '''Python code to insert image into a Cassandra DB'''
+'''Python code to insert image into a Cassandra DB'''
 from cassandra.cluster import Cluster
 from cassandra.query import dict_factory
 import os, uuid, base64
 cluster = Cluster()
 session = cluster.connect('test')
-# file = os.path.join(os.getcwd(), 'test.jpg')
-# fid = uuid.uuid4()
-# with open(file, 'rb') as f:
-# 	data = f.read()
-# 	res = base64.b64encode(data)
-# 	res1 = res.decode('utf-8')
-# 	session.execute("INSERT INTO img (id, image) VALUES (%s,%s)", (fid, res))
+file = os.path.join(os.getcwd(), 'test.jpg')
+fid = uuid.uuid4()
+with open(file, 'rb') as f:
+	data = f.read()
+	res = base64.b64encode(data)
+	session.execute("INSERT INTO img (id, image) VALUES (%s,%s)", (fid, res))
 import pandas as pd
 def pandas_factory(colnames, rows):
         return pd.DataFrame(rows, columns=colnames)
