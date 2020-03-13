@@ -1,8 +1,26 @@
 <html>
 <head>
-</head>
-<body>
+
   <script>
+
+  //store data using name/value format
+document.cookie="sitename=JavaScript Kit"
+
+//retrieve value from cookie
+var beginindex, endindex, result
+//set begin index to 1st letter of value ("W")
+beginindex=document.cookie.indexOf("sitename")+9
+endindex=beginindex
+//while we haven't hit ";" and it's not end of cookie
+while (document.cookie.charAt(endindex)!=";"&&endindex<=document.cookie.length)
+    endindex++
+//result contains "JavaScript Kit"
+var result=document.cookie.substring(beginindex,endindex)
+console.log(result)
+
+
+
+
   var arrayWithElements = new Array();
 
  document.onclick = clickListener;
@@ -28,6 +46,8 @@ function clickListener(e)
 
 
   </script>
+</head>
+<body>
 <div><a href="#">a class</a><div>
 
   <br><br><br>
