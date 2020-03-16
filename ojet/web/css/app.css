@@ -212,7 +212,8 @@ border-width:0px 0px 5px 0px;}
   height: 0px;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 15px solid green;
+  border-top: 15px solid red;
+  
 }
 
 /*Class for the value text*/
@@ -388,18 +389,12 @@ border-color: #d50e0e !important;
     color: #fff;
   }
   .oj-button-label:hover{
-    background-color: #000000;
+   
+    color: #000;
   }
-  polygon[Attributes Style] {
-    shape-rendering: crispedges;
-    fill: black;
-}
-.abc{
-  padding-left: 5%;
-}
-.xyz{
-  margin-top: 7%;
-}
+  
+
+
 .oj-toolbar-separator{
   display: none;
 }
@@ -413,22 +408,19 @@ color: #000;
 .oj-text-secondary-color{
   color: green;
   font-weight: bold;
-  font-size: 17px;
+  font-size: 12px;
 }
 .oj-listview-item-element{
-  color: #cbd9de;
-  font-size: 14px;
+  
+  font-size: 12px;
 }
 .oj-listview-item-element:hover{
-  color: #000;
+  color: #000000 !important;
 }
 .name{
-  font-size: 20px;
+  font-size: 15px;/*font size of data displayed from api*/
 }
-.triangle-up-small{
-  margin-left: 250px;
-  margin-top: -23px;
-}
+
 .oj-listview-item {
     padding: 0.85714rem;
      background-image: url();
@@ -436,4 +428,14 @@ color: #000;
     background-size: 100% 1px;
     background-repeat: no-repeat;
     box-sizing: border-box;
+}
+.second-row{
+  margin-top: 5%;
+}
+.oj-flex-item:hover{
+  color: #000000;
+}
+.log-out{
+  background:none;
+  border:none;
 }

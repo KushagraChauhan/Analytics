@@ -38,7 +38,7 @@ define(['accUtils',
           var data2 = ko.observableArray();/*Most important thing to make the data array observable otherwise it will not show the data of the REST API*/
           function getData() {
                   // var data = [];/**/
-                  $.getJSON("https://analytics.techeela.net/usergroupdata?startdate=2020-01-10&enddate=2020-01-15").
+                  $.getJSON("https://analytics.techeela.net/usergroupdata?startdate=2020-01-09&enddate=2020-01-14").
                   then(function(dataset) {
                       $.each(dataset, function (index, value) {
                           console.log(JSON.stringify(dataset));
@@ -74,7 +74,7 @@ define(['accUtils',
        var data4 = ko.observableArray();/*Most important thing to make the data array observable otherwise it will not show the data of the REST API*/
           function techData() {
                   // var data = [];/**/
-                  $.getJSON("https://analytics.techeela.net/categorydata?enddate=2020-01-15&startdate=2020-01-10&category='Technology'").
+                  $.getJSON("https://analytics.techeela.net/categorydata?enddate=2020-01-14&startdate=2020-01-09&category='Technology'").
                   then(function(dataset) {
                       $.each(dataset, function (index, value) {
                           console.log(" I am dataset inside each " + JSON.stringify(dataset));
@@ -87,6 +87,45 @@ define(['accUtils',
      techData();
       // console.log("Test the gate");
       console.log(JSON.stringify(data4));
+
+      var data5 = ko.observableArray();
+       function employeeData() {
+          $.getJSON("https://analytics.techeela.net/userdaywise?startdate=2020-01-09&enddate=2020-01-14&usergroup='Employee'").
+                  then(function(dataset) {
+                      $.each(dataset, function (index, value) {
+                          console.log(" I am dataset inside each " + JSON.stringify(dataset));
+                          data5.push(value);
+                          // PUSH THE VALUES INSIDE THE ARRAY.
+                      });                 
+                  });
+       }
+       employeeData();
+
+       var data6 = ko.observableArray();
+       function prospectData() {
+          $.getJSON("https://analytics.techeela.net/userdaywise?startdate=2020-01-09&enddate=2020-01-14&usergroup='Prospect'").
+                  then(function(dataset) {
+                      $.each(dataset, function (index, value) {
+                          console.log(" I am dataset inside each " + JSON.stringify(dataset));
+                          data6.push(value);
+                          // PUSH THE VALUES INSIDE THE ARRAY.
+                      });                 
+                  });
+       }
+       prospectData();
+
+       var data7 = ko.observableArray();
+       function customerData() {
+          $.getJSON("https://analytics.techeela.net/userdaywise?startdate=2020-01-09&enddate=2020-01-14&usergroup='Customer'").
+                  then(function(dataset) {
+                      $.each(dataset, function (index, value) {
+                          console.log(" I am dataset inside each " + JSON.stringify(dataset));
+                          data7.push(value);
+                          // PUSH THE VALUES INSIDE THE ARRAY.
+                      });                 
+                  });
+       }
+       customerData();
 
           //line area chart JS begins here
           /* toggle button variables */
@@ -107,9 +146,9 @@ define(['accUtils',
              return categories.length > 0 ? categories.join(', ') : 'none';
           }.bind(this));
 
-         self.stackValue = ko.observable('off');
-          self.orientationValue = ko.observable('vertical');
-          self.bardataProvider = new ArrayDataProvider(data3, {keyAttributes: 'id'});
+        
+          this.orientationValue = ko.observable('vertical');
+          this.dataProvider3 = new ArrayDataProvider(data3, {keyAttributes: 'id'});
 
           this.stackValue = ko.observable('off');
            this.orientationValue = ko.observable('vertical');
@@ -125,7 +164,14 @@ define(['accUtils',
            self.orientationValue = ko.observable('vertical');
           self.dataProvider = new ArrayDataProvider(JSON.parse(data), {keyAttributes: 'id'});*/
 
+     this.orientationValue = ko.observable('vertical');
+          this.linechartdataprovider = new ArrayDataProvider(data5, {keyAttributes: 'id'});
 
+      this.orientationValue = ko.observable('vertical');
+          this.prospectdataprovider = new ArrayDataProvider(data6, {keyAttributes: 'id'});  
+
+      this.orientationValue = ko.observable('vertical');
+          this.customerdataprovider = new ArrayDataProvider(data7, {keyAttributes: 'id'});       
 
       self.selectedItem = ko.observable("home");
       self.currentEdge = ko.observable("top");

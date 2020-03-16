@@ -110,7 +110,7 @@
                     <oj-option id="pref" value="pref">Preferences</oj-option>
                     <oj-option id="help" value="help">Help</oj-option>
                     <oj-option id="about" value="about">About</oj-option>
-                    <oj-option id="out" value="out">Sign Out</oj-option>
+                    <oj-option id="out" value="out"><button class= "log-out" onclick="window.location.href = '/?login';">Log Out</button></oj-option>
                   </oj-menu>
                 </oj-menu-button>
               </oj-toolbar>
@@ -118,6 +118,14 @@
           </div>
           <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
             <oj-navigation-list id="navTabBar" class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
+                                data="[[navDataProvider2]]"
+                                edge="top"
+                                item.renderer="[[KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
+                                selection="{{router.stateId}}">
+            </oj-navigation-list>
+          </div>
+         <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
+            <oj-navigation-list id="navTabBar2" class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
                                 data="[[navDataProvider]]"
                                 edge="top"
                                 item.renderer="[[KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
