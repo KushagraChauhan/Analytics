@@ -46,12 +46,14 @@ define(['knockout', 'ojs/ojmodule-element-utils', 'ojs/ojknockouttemplateutils',
       self.mdScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(mdQuery);
 
        // Router setup
+       // self.router = Router.rootInstance;
        self.router = Router.rootInstance;
        self.router.configure({
-         'dashboard': {label: 'Dashboard', isDefault: true},
-         'incidents': {label: 'Incidents'},
-         'customers': {label: 'Customers'},
-         'about': {label: 'About'}
+         'login': {label: 'LogIn', isDefault: true},
+           //'dashboard': {label: 'Dashboard'},
+          // 'incidents': {label: 'Incidents'},
+          // 'customers': {label: 'Customers'},
+          // 'about': {label: 'About'}
        });
       Router.defaults['urlAdapter'] = new Router.urlParamAdapter();
 
@@ -67,16 +69,44 @@ define(['knockout', 'ojs/ojmodule-element-utils', 'ojs/ojknockouttemplateutils',
 
       // Navigation setup
       var navData = [
-      {name: 'Dashboard', id: 'dashboard',
+      {name: 'LogIn', id: 'login', 
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24'},
-      {name: 'Experience Center', id: 'incidents',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
-      {name: 'Social', id: 'customers',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24'},
-      {name: 'About', id: 'about',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24'}
+        //{name: 'Dashboard', id: 'dashboard', 
+       //   iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24'},
+       // {name: 'Experience Center', id: 'incidents', 
+       //  iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
+       // {name: 'Social', id: 'customers', 
+       //  iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24'},
+       // {name: 'About', id: 'about', 
+       //  iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24'}
       ];
       self.navDataProvider = new ArrayDataProvider(navData, {keyAttributes: 'id'});
+
+  
+      
+     self.router2 = Router.rootInstance;
+     self.router2.configure({
+                    'login': {label: 'LogIn', isDefault:true},
+                    'dashboard': {label: 'Dashboard'},
+                    'incidents': {label: 'Incidents'},
+                    'customers': {label: 'Customers'},
+                    'about': {label: 'About'}
+                 });
+                 // Navigation setup
+                 var navData2 = [
+                    {name: 'Dashboard', id: 'dashboard',
+                      iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24'},
+                    {name: 'Incidents', id: 'incidents',
+                      iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
+                    {name: 'Customers', id: 'customers',
+                      iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24'},
+                    {name: 'About', id: 'about',
+                      iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24'}
+                 ];
+                 self.navDataProvider2 = new ArrayDataProvider(navData2, {keyAttributes: 'id'});
+                 //self.navDataSource.reset(navData, {idAttribute: 'id'});
+                 oj.Router.sync();   
+      
 
       // Drawer
       // Close offcanvas on medium and larger screens
@@ -111,12 +141,14 @@ define(['knockout', 'ojs/ojmodule-element-utils', 'ojs/ojknockouttemplateutils',
           self.waitForAnnouncement = false;
         }, 2500);
       }
+      
 
       // Header
       // Application Name used in Branding Area
       self.appName = ko.observable("App Name");
       // User Info used in Global Navigation area
-      self.userLogin = ko.observable("john.hancock@oracle.com");
+      self.userLogin = ko.observable("");
+      alert(self.userLogin);
 
       // Footer
       function footerLink(name, id, linkTarget) {

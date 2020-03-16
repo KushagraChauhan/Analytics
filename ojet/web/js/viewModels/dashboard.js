@@ -17,6 +17,7 @@ define(['accUtils',
   'ojs/ojswitcher',
   'ojs/ojradioset', 
   'ojs/ojlabel',
+  'ojs/ojinputtext',
   'ojs/ojbutton', 
   'ojs/ojtoolbar', 
   'ojs/ojchart'],
@@ -25,6 +26,15 @@ define(['accUtils',
 
     function IncidentsViewModel() {
       var self = this;
+       self.startdate = ko.observable();
+      self.enddate = ko.observable();
+      self.submittedValue = ko.observable();
+      self.submitBt = function (data, event){
+        var startdate = $("#startdate").val();
+              var enddate = $("#enddate").val();
+              self.submittedValue(self.startdate() + " - " + self.enddate());
+              return true;
+      }
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
 
@@ -47,7 +57,7 @@ define(['accUtils',
                   $.getJSON("https://analytics.techeela.net/categorydata?startdate=2020-01-10&enddate=2020-01-15&category='Technology'").
                   then(function(dataset) {
                       $.each(dataset, function (index, value) {
-                          console.table((dataset));
+                           console.table((dataset));
                           data.push(value);
                           // PUSH THE VALUES INSIDE THE ARRAY.
                       });                 
@@ -64,10 +74,10 @@ define(['accUtils',
       var data2 = ko.observableArray();/*Most important thing to make the data array observable otherwise it will not show the data of the REST API*/
           function usergroupData() {
                   // var data = [];/**/
-                  $.getJSON("https://analytics.techeela.net/usergroupdata?startdate=2020-01-10&enddate=2020-01-15&category='Technology'").
+                  $.getJSON("https://analytics.techeela.net/usergroupdata?startdate=2020-01-09&enddate=2020-01-14&category='Technology'").
                   then(function(dataset) {
                       $.each(dataset, function (index, value) {
-                          console.table((dataset));
+                           console.table((dataset));
                           data2.push(value);
                           // PUSH THE VALUES INSIDE THE ARRAY.
                       });                 
@@ -87,7 +97,7 @@ define(['accUtils',
                   $.getJSON("https://analytics.techeela.net/categorydata?startdate=2020-01-09&enddate=2020-01-12&category='Location'").
                   then(function(dataset) {
                       $.each(dataset, function (index, value) {
-                          console.table((dataset));
+                           console.table((dataset));
                           data3.push(value);
                           // PUSH THE VALUES INSIDE THE ARRAY.
                       });                 
@@ -132,10 +142,13 @@ define(['accUtils',
                       $.each(dataset, function (index, value) {
                           console.table((dataset));
                           data5.push(value);
+                         console.log(value.change);
+                         
                           // PUSH THE VALUES INSIDE THE ARRAY.
                       });                 
                   });
       }
+      
 
       practiceData();
       this.dataProvider5 = new ArrayDataProvider(data5, { keyAttributes: 'id' });  
