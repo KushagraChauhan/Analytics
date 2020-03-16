@@ -2,7 +2,7 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="js/jquery.heatmap.js"></script>
+<script src="{{ url_for('static', filename='jquery.heatmap.js')}}"></script>
 <script>
 	$(document).ready(function(){
 		//$("p").heatmapElement();
@@ -63,7 +63,7 @@ function send_img(){
 //console.log("sending the data to the flask app")
 $( function() {
     $( "#demo" ).html(function() {
-      var appdir='/details';
+      var appdir='/upload';
       var send_msg = "<p>Sending request</p>";
       var received_msg = "<p>Details sent </p>";
       send_img();
