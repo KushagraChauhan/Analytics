@@ -4,6 +4,8 @@
 #	image blob
 #	)
 
+'''Changes to commit in the last commit'''
+
 '''Python code to insert image into a Cassandra DB'''
 from cassandra.cluster import Cluster
 from cassandra.query import dict_factory
