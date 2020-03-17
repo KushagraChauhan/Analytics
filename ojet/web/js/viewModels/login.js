@@ -36,8 +36,9 @@ define(['ojs/ojcore',
       self.navData = ko.observable();
       var myresttoken = "My token";
 
-
+     // document.getElementById("techeela").style.visibility = "hidden";
       document.getElementById("navTabBar").style.visibility = "hidden";
+      document.getElementById("navTabBar2").style.visibility = "hidden";
        document.getElementById("userMenu").style.visibility = "hidden";
       self.showmy = function()
       {

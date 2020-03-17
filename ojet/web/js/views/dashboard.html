@@ -140,7 +140,8 @@
               <div class="oj-sm-2 oj-flex-item">
                 <img src="/css/images/Risk & Performance.png" style="width:50px;"/>
               </div>
-              <div class="oj-sm-8 oj-flex-item"><strong class="custom-heading"><a href = "?root=incidents">User Group</a></strong></div>
+              <div class="oj-sm-8 oj-flex-item"><strong class="custom-heading"><button class="user" onclick="myFunction()">User Group</button>
+</strong></div>
               <div class="oj-sm-2 oj-flex-item"></div>
         </div>
         <div class="scrollbar" id="style-4">
@@ -300,3 +301,8 @@
   </div>
 </div>
 </div><!-- Main Container Ends here -->
+<script type="text/javascript">
+  function myFunction() {
+    oj.Router.rootInstance.go('incidents');  
+}
+</script>

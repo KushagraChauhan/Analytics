@@ -24,8 +24,11 @@ define(['accUtils',
  function(accUtils, ko, $, Bootstrap,ArrayDataProvider) {
 
 
+   
+
     function IncidentsViewModel() {
       var self = this;
+
        self.startdate = ko.observable();
       self.enddate = ko.observable();
       self.submittedValue = ko.observable();
@@ -47,6 +50,8 @@ define(['accUtils',
        * after being disconnected.
        */
  
+
+     
  //technology data starts here..
  //
  //
@@ -174,9 +179,6 @@ define(['accUtils',
             tabContent.appendChild(textNode.cloneNode(true));
           }
       });
-
-
-
 
 
       self.connected = function() {

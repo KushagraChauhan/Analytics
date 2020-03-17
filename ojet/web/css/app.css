@@ -439,3 +439,17 @@ color: #000;
   background:none;
   border:none;
 }
+..oj-inputtext-input{
+  border-radius: 2px !important;
+    height: 50px !important;
+}
+.user{
+  background:none;
+  border:none;
+  color:#1D8CE3;
+  font-size:24px;
+  font-weight:bold;
+}
+.user:hover{
+  font-size: 34px;
+}
