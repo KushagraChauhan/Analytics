@@ -44,6 +44,10 @@ function clickListener(e)
   //print(arrayWithElements);
 }
 
+clickfunc = function(link) {
+var t = link.innerText || link.textContent;
+console.log(t);
+}
 
   </script>
 </head>
@@ -52,10 +56,10 @@ function clickListener(e)
 
   <br><br><br>
               <ul>
-                <li><a href="#intro">Intro</a></li>
-								<li><a href="#work">Work</a></li>
-								<li><a href="#about">About</a></li>
-								<li><a href="#contact">Contact</a></li>
+                <li><a href="#intro" onclick='clickfunc(this)'>Intro</a></li>
+								<li><a href="#work" onclick='clickfunc(this)'>Work</a></li>
+								<li><a href="#about" sonclick='clickfunc(this)'>About</a></li>
+								<li><a href="#contact" onclick='clickfunc(this)'>Contact</a></li>
 							</ul>
 
 u have clicked on-
