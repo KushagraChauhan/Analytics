@@ -1,0 +1,58 @@
+<html>
+<head>
+
+  <script>
+klayer = [{
+  'img':'hello'
+}]
+
+
+
+document.addEventListener("click", function(e) {
+    var a = e.target.closest("a[href]");
+    if (a) {
+        // The event passed through the element on its way to the document
+	var b = e.target.closest("img[alt]")
+	var c = b.getAttribute("alt")
+	console.log(c)
+  }
+  var img = new Image;
+  img.width = img.height = "1px";
+  var res = window.navigator;
+  var data = {};
+  var _plugins = {};
+  data.url = window.location.href;
+  data.ref = document.referrer;
+  data.nav = res;
+  data.sub = c;
+  data.width = window.screen.width;
+  data.height = window.screen.height;
+  data.platform = navigator.platform;
+  data.history = history.length;
+  img.dataset.stats = JSON.stringify(data);
+  klayer.push(img.dataset.stats)
+  console.log(
+    img.dataset.stats
+  );
+
+});
+
+console.log(klayer)
+  </script>
+</head>
+<body>
+<div><a href="#">a class</a><div>
+
+  <br><br><br>
+              <ul>
+<a href="#">
+<img border="0" alt="Hiiii" src="test.jpg" width="100" height="100">
+                <li><a href="#intro">Intro</a></li>
+								<li><a href="#work">Work</a></li>
+								<li><a href="#about">About</a></li>
+								<li><a href="www.google.com">Contact</a></li>
+							</ul>
+
+u have clicked on-
+<body>
+<html>
