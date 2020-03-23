@@ -3,6 +3,7 @@ import os
 import urllib.request
 import uuid, base64
 from flask import Flask, flash, request, redirect, render_template, jsonify
+import json
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 from cassandra.cluster import Cluster
@@ -22,7 +23,7 @@ def start():
 
 @app.route('/tracker', methods=['POST'])
 def rec_img():
-    print("received img")
+    print("received klayer")
     rf = request.form
     print(rf)
     for key in rf.keys():

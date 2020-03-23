@@ -1,8 +1,8 @@
 //Analytics.js
 
-klayer = [{
-  'name':'kush'
-}]
+klayer = []
+
+function clickfunction(callback){
 document.addEventListener("click", function(e) {
     var a = e.target.closest("a[href]");
     if (a) {
@@ -29,21 +29,31 @@ document.addEventListener("click", function(e) {
   data.platform = navigator.platform;
   data.history = history.length;
   img.dataset.stats = JSON.stringify(data);
-  klayer.push(img.dataset.stats)
-  console.log(
-    img.dataset.stats
-  );
-});
-//Send the data to the server
-  console.log("sending the data to the flask app")
-  var server = "http://127.0.0.1:5000";
-  //console.log("sending the data to the flask app")
-  var send = {};
 
+  var singleObj = {}
+  singleObj['data'] = img.dataset.stats;
+  klayer.push(singleObj);
+
+});
+return callback(function(){
+   console.log("sendData finished.");
+   return true;
+ });
+}
+console.log(klayer)
+//Send the data to the server
+function sendData(callback){
+
+    var server = "http://127.0.0.1:5000";
+
+  console.log("sending the data to the flask app")
+  var send = {};
+  //img.dataset.stats = JSON.stringify(data);
   function send_img(){
-    send = img.dataset.stats;
+    send = klayer;
     console.log('-------hello-------');
   }
+
   //console.log("sending the data to the flask app")
   $(function() {
       $('img').click(function() {
@@ -65,3 +75,6 @@ document.addEventListener("click", function(e) {
         });
       });//72.167.20.118
     });
+     return callback();
+}
+clickfunction(sendData);
