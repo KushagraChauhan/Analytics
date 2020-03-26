@@ -19,26 +19,24 @@ CORS(app)
 #################################################################################
 @app.route('/')
 def start():
-	return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/tracker', methods=['POST'])
 def rec_img():
-    print("received klayer")
-    rf = request.form
+    print("received 1px image")
+    rf = request.json
     print(rf)
-    for key in rf.keys():
-        data=key
-    print("The data is----------",data)
-    data_dic = json.loads(data)
-    print("............",data_dic.keys())
-    img_url = data_dic['url']
-    img_width = data_dic['width']
-    img_height = data_dic['height']
-    img_plaform = data_dic['platform']
-    img_history = data_dic['history']
-    img_ref = data_dic['ref']
-    img_nav = data_dic['nav']
-    img_plugins = data_dic['_plugins']
+    print("The data is----------",rf['subcategory'])
+    img_url = rf['url']
+    img_width = rf['width']
+    img_height = rf['height']
+    img_plaform = rf['platform']
+    img_history = rf['history']
+    img_ref = rf['ref']
+    img_nav = rf['nav']
+    date = rf['date']
+    time = rf['time']
+    img_subcategory = rf['subcategory']
     print('<<<<<<',img_url,'>>>>>>>')
     print('<<<<<<',img_width,'>>>>>>>')
     print('<<<<<<',img_height,'>>>>>>>')
@@ -46,12 +44,15 @@ def rec_img():
     print('<<<<<<',img_history,'>>>>>>>')
     print('<<<<<<',img_ref,'>>>>>>>')
     print('<<<<<<',img_nav,'>>>>>>>')
+    print('<<<<<<',date,'>>>>>>>')
+    print('<<<<<<',time,'>>>>>>>')
+
     ip = request.remote_addr
-    resp_dic={'url':img_url, 'msg':"details:",
-    'width':img_width, 'height':img_height}
+    resp_dic={'subcategory':img_subcategory}
     resp = jsonify(resp_dic)
     resp.headers['Access-Control-Allow-Origin']='*'
 
+    return resp
     ############################################################################
     '''Storing the data in the Cassandra db'''
     ############################################################################
@@ -68,10 +69,7 @@ def rec_img():
 #	image blob
 #	)
 
-class Heatmap(db.Model):
-    __keyspace__ = 'test'
-    id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
-    imgdata = db.columns.Text()
+
 ################################################################################
 ################################################################################
 ################################################################################

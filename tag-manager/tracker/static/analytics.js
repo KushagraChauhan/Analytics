@@ -67,20 +67,21 @@ function clickfunction(callback){
     in the form of Key:Value pair
 */
     var kObj = {}
-    kObj = alt;
+    kObj['subcategory'] = alt;
     klayer.push(kObj);
-
+    console.log(img.dataset.stats)
     var http = new XMLHttpRequest();
     var url = 'http://127.0.0.1:5000/tracker';
-    var params = klayer;
+    var params = img.dataset.stats;
     http.open('POST', url, true);
 
     //Send the proper header information along with the request
-    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  //  http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    http.setRequestHeader('Content-type', 'application/json');
 
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
-            alert(http.responseText);
+            console.log(http.responseText);
         }
     }
     http.send(params);
@@ -128,10 +129,6 @@ function sendData(callback){
   //       });
   //     });//72.167.20.118
   //   });
-
-
-
-
      return callback();
 }
 clickfunction(sendData);
