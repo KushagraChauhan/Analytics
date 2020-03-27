@@ -1,11 +1,9 @@
 /**
  * Implements cookie-less JavaScript session variables
- * v1.0
- *
- * By Craig Buckler, Optimalworks.net
  *
  */
 
+function Sess(){
  if (JSON && JSON.stringify && JSON.parse) var Session = Session || (function() {
 
   // window object
@@ -47,7 +45,6 @@
 
  })();
 
-
  // store a session value/object
  Session.set(name, object);
 
@@ -59,3 +56,4 @@
 
  // dump session data
  Session.dump();
+}
