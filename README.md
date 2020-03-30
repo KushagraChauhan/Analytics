@@ -9,3 +9,14 @@
 [Back end](https://analytics.techeela.net/)
  
  For more info., please go in the folders and read more about them.
+
+In tag-manager:
+- Convert the html5 canvas into image to be stored as a heatmap on server
+- Create sessions for users
+- Assign the indices to different elements
+
+In front-end:
+- Login using API 
+- Change the arrows for negative percent change
+
+/////////
