@@ -47,29 +47,38 @@ def rec_img():
     print('<<<<<<',date,'>>>>>>>')
     print('<<<<<<',time,'>>>>>>>')
 
-    ip = request.remote_addr
+
     resp_dic={'subcategory':img_subcategory}
     resp = jsonify(resp_dic)
     resp.headers['Access-Control-Allow-Origin']='*'
 
-    return resp
+
     ############################################################################
     '''Storing the data in the Cassandra db'''
     ############################################################################
-    cluster = Cluster()
-    session = cluster.connect('test')
-    fid = uuid.uuid4()
-    session.execute("INSERT INTO test.Heatmap (id, imgdata) VALUES (%s,%s)", (fid, data1))
+    Expcentre.objects().create(url=img_url, ref=img_ref, width=img_width,
+    height=img_height, platform=img_plaform, history=img_history,clickdate=date, clicktime=time,
+    subcategory=img_subcategory)
+
     return resp
 ################################################################################
 '''Structure of Cassandra database'''
 ################################################################################
-#	CREATE TABLE img(
-#	id uuid PRIMARY KEY,
-#	image blob
-#	)
 
-
+class Expcentre(db.Model):
+    __keyspace__ = 'test'
+    id = db.columns.UUID(primary_key = True, default = uuid.uuid4)
+    url = db.columns.Text()
+    ref = db.columns.Text()
+    nav = db.columns.Text()
+    width = db.columns.Integer()
+    height = db.columns.Integer()
+    platform = db.columns.Text()
+    history = db.columns.Integer()
+    subcategory = db.columns.Text()
+    ip = db.columns.Text()
+    clickdate = db.columns.Date()
+    clicktime = db.columns.Time()
 ################################################################################
 ################################################################################
 ################################################################################

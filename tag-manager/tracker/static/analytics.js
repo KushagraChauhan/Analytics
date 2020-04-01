@@ -2,7 +2,7 @@
  * @fileoverview analytics.js
  * @author kushagra chauhan (kushagra_sc@yahoo.in)
  */
-import Sess from './session.js'
+// import Sess from './session.js'
 
 klayer = [{
   'name':'kush'
