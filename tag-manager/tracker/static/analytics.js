@@ -37,8 +37,14 @@ function clickfunction(callback){
 * From there, I get the 'alt' attribute of the image.
 */
     if (a) {
-  	   var img = e.target.closest("img[alt]")
-  	   var alt = img.getAttribute("alt")
+      var parentNode = a.parentNode.parentNode;
+      var grandparent = parentNode.parentNode.parentNode;
+      var special = grandparent.parentNode.parentNode;
+      var h2 = special.querySelector('h2');
+      var title = h2.innerText;
+      console.log(title)
+      var img = e.target.closest("img[alt]")
+      var alt = img.getAttribute("alt")
     }
 /**
 * From here-on, I get other details about the user such as
@@ -55,6 +61,7 @@ function clickfunction(callback){
     data.url = window.location.href;
     data.ref = document.referrer;
     data.nav = res;
+    data.category = title;
     data.subcategory = alt;
     data.width = window.screen.width;
     data.height = window.screen.height;
