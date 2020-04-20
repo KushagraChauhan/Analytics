@@ -1,8 +1,11 @@
 /**
- * @fileoverview analytics.js
+ * @fileoverview analytics_react.js
  * @author kushagra chauhan (kushagra_sc@yahoo.in)
  */
-// import Sess from './session.js'
+
+/**
+ *This file is specific to the react app of Experience Centre.
+*/
 
 klayer = [{
   'name':'kush'
@@ -37,21 +40,19 @@ function clickfunction(callback){
 * From there, I get the 'alt' attribute of the image.
 */
     if (a) {
-      var parentNode = a.parentNode.parentNode;
-      var grandparent = parentNode.parentNode.parentNode;
-      var special = grandparent.parentNode.parentNode;
-      var h2 = special.querySelector('h2');
-      var title = h2.innerText;
-      console.log(title)
+      // var parentNode = a.parentNode.parentNode;
+      // var grandparent = parentNode.parentNode.parentNode;
+      // var special = grandparent.parentNode.parentNode;
+      // var h2 = special.querySelector('h2');
+      // var title = h2.innerText;
+      // console.log(title)
       var img = e.target.closest("img[alt]")
-      var alt = img.getAttribute("alt")
+      var alt = img.getAttribute("title")
     }
 /**
 * From here-on, I get other details about the user such as
 * Date, Time, platform, url, referrer, height and width of the device.
 */
-    var img = new Image;
-    img.width = img.height = "1px";
     var d = new Date();
     var date = d.toISOString().slice(0,10);
     var time = d.toLocaleTimeString();

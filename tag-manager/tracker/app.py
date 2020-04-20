@@ -36,6 +36,7 @@ def rec_img():
     img_nav = rf['nav']
     date = rf['date']
     time = rf['time']
+    img_catgeory = rf['category']
     img_subcategory = rf['subcategory']
     print('<<<<<<',img_url,'>>>>>>>')
     print('<<<<<<',img_width,'>>>>>>>')
@@ -58,7 +59,7 @@ def rec_img():
     ############################################################################
     Expcentre.objects().create(url=img_url, ref=img_ref, width=img_width,
     height=img_height, platform=img_plaform, history=img_history,clickdate=date, clicktime=time,
-    subcategory=img_subcategory)
+    subcategory=img_subcategory, category=img_catgeory)
 
     return resp
 ################################################################################
@@ -76,12 +77,17 @@ class Expcentre(db.Model):
     platform = db.columns.Text()
     history = db.columns.Integer()
     subcategory = db.columns.Text()
-    ip = db.columns.Text()
+    category = db.columns.Text()
     clickdate = db.columns.Date()
     clicktime = db.columns.Time()
 ################################################################################
 ################################################################################
 ################################################################################
+'''API to get real-time data'''
+###############################################################################
+################################################################################
+################################################################################
+
 
 if __name__ == "__main__":
     app.run(debug=True)
