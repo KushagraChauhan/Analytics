@@ -62,17 +62,17 @@ Solution for the above error-
 
 API Names:
 	
-[Retrieve User Profiles](https://analytics.techeela.net/ret)
+[Retrieve User Profiles](https://analytics.eela.tech/ret)
 
-[Enter Static Data](https://analytics.techeela.net/static)
+[Enter Static Data](https://analytics.eela.tech/static)
 
-[Retrieve Static Data](https://analytics.techeela.net/staticret)
+[Retrieve Static Data](https://analytics.eela.tech/staticret)
 
-[User group data wrt time period](https://analytics.techeela.net/usergroupdata)
+[User group data wrt time period](https://analytics.eela.tech/usergroupdata)
 
-[Category wise data within a time peroid](https://analytics.techeela.net/categorydata)
+[Category wise data within a time peroid](https://analytics.eela.tech/categorydata)
 
-[User group day-wise](https://analytics.techeela.net/userdaywise)
+[User group day-wise](https://analytics.eela.tech/userdaywise)
 
 ### Happy Coding
 
