@@ -467,6 +467,12 @@ def retrieve10():
         return pd.DataFrame(rows, columns=colnames)
     session.row_factory = pandas_factory
     session.default_fetch_size = None
+
+    current_date = datetime.datetime.utcnow()
+
+    difference = current_date - prevstartdate
+    print(difference)
+    
     data = []
     datequery = "SELECT click_date FROM test.Expcentreclickdata WHERE usergroup={} ALLOW FILTERING;".format(usergroup)
     rslt = session.execute(datequery, timeout=None)
