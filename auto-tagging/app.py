@@ -1,3 +1,8 @@
+'''
+######################################
+Issue #1000- Auto Tagging of files
+######################################
+'''
 import RAKE
 from tika import parser
 import requests
